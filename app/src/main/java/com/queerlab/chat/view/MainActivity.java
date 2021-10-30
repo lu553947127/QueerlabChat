@@ -31,13 +31,7 @@ import com.queerlab.chat.push.OPPOPushImpl;
 import com.queerlab.chat.push.PrivateConstants;
 import com.queerlab.chat.push.ThirdPushTokenMgr;
 import com.queerlab.chat.tencent.TUIKitUtil;
-import com.queerlab.chat.view.start.ActiveFragment;
-import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.imsdk.v2.V2TIMConversationResult;
-import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
-import com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.vivo.push.IPushActionListener;
 import com.vivo.push.PushClient;
 
@@ -103,7 +97,7 @@ public class MainActivity extends BaseActivity {
         mFragments = new ArrayList<>();
         mFragments.add(new IndexFragment());
         mFragments.add(new MapFragment());
-        mFragments.add(new ActiveFragment());
+        mFragments.add(new ActivityFragment());
         mFragments.add(new MineFragment());
 
         switchFragment(lastFragment,0);lastFragment=0;

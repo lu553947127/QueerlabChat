@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/color_F4F7FE"
-    android:paddingBottom="50dp">
+    android:background="@color/color_F4F7FE">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_more"
@@ -21,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/shape_white_top_25"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="40dp"
+        android:paddingBottom="65dp">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -56,7 +56,6 @@
                         android:textSize="18sp" />
 
                 </RelativeLayout>
-
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_name"
@@ -144,7 +143,6 @@
                         android:id="@+id/rv_group"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
                         android:nestedScrollingEnabled="false"/>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -152,7 +150,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:overScrollMode="never"
-                        android:layout_marginBottom="15dp"
                         android:nestedScrollingEnabled="false"
                         android:visibility="gone"/>
 

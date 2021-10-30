@@ -66,6 +66,20 @@ public class RefreshUtils {
         return list.toArray(new String[list.size()]);
     }
 
+    /**
+     * 测试图片
+     * @return
+     */
+    public static List<String> getImagesList(){
+        List<String> list = new ArrayList();
+        list.add("https://upload-images.jianshu.io/upload_images/5809200-a99419bb94924e6d.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp");
+        list.add("https://upload-images.jianshu.io/upload_images/5809200-736bc3917fe92142.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp");
+        list.add("https://upload-images.jianshu.io/upload_images/5809200-7fe8c323e533f656.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp");
+        list.add("https://upload-images.jianshu.io/upload_images/5809200-c12521fbde6c705b.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp");
+        list.add("https://upload-images.jianshu.io/upload_images/5809200-caf66b935fd00e18.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp");
+        return list;
+    }
+
     //小组类型列表
     public static List<BaseBean> getGroupListType(){
         List<BaseBean> list =new ArrayList<>();

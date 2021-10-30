@@ -120,6 +120,9 @@
         <!-- 消息加载过度页 -->
         <activity android:name=".view.message.MessagesExcessiveActivity"  />
 
+        <!-- 活动详情页面 -->
+        <activity android:name=".view.activity.ActivityDetailActivity"  />
+
         <!-- 单聊页面 -->
         <activity android:name=".view.message.ChatActivity"
             android:screenOrientation="portrait"

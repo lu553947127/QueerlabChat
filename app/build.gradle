@@ -110,6 +110,8 @@ dependencies {
     implementation 'com.github.yalantis:ucrop:2.2.6-native'
     //MVVM设计模式的一套快速开发库，整合Okhttp+RxJava+Retrofit+Glide等主流模块
     implementation 'com.github.goldze:MVVMHabit:4.0.0'
+    //轮播图
+    implementation 'com.youth.banner:banner:2.0.11'
 
     //腾讯地图 基本sdk
     implementation 'com.tencent.map:tencent-map-vector-sdk:4.3.5'
