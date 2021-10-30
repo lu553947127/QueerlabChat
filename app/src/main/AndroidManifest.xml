@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.queerlab.chat">
+
+    <!--访问网络获取地图服务-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--检查网络可用性-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- 访问WiFi状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!--需要外部存储写权限用于保存地图缓存-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
+    <!--允许程序读取内置sd卡的写权限-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--获取 device id 辨别设备-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--允许程序打开相机权限-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--用于提高GPS定位速度-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!--悬浮窗权限-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!--麦克风权限-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- ********OPPO 推送 start******** -->
+    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE"/>
+    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE"/>
+    <!-- ********OPPO 推送 end******** -->
+
+    <uses-feature android:name="android.hardware.Camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+
+    <application
+        android:name=".app.MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/app_icon"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.QueerlabChat"
+        android:networkSecurityConfig="@xml/network_config"
+        android:requestLegacyExternalStorage="true"
+        tools:ignore="UnusedAttribute"
+        tools:replace="android:allowBackup">
+
+        <!-- 启动页 -->
+        <activity android:name=".view.start.StartUpActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 引导页 -->
+        <activity android:name=".view.start.GuideActivity" android:launchMode="singleTask" />
+
+        <!-- 登录页 -->
+        <activity android:name=".view.login.LoginActivity" android:launchMode="singleTask" />
+
+        <!-- 输入手机号页面 -->
+        <activity android:name=".view.login.LoginPhoneActivity" android:launchMode="singleTask" />
+
+        <!-- 输入手机验证码页面 -->
+        <activity android:name=".view.login.LoginCodeActivity" android:launchMode="singleTask" />
+
+        <!-- 创建用户名称页面 -->
+        <activity android:name=".view.login.FirstNameActivity" android:launchMode="singleTask" />
+
+        <!-- 添加兴趣爱好页面 -->
+        <activity android:name=".view.login.FirstHobbyActivity" android:launchMode="singleTask" android:windowSoftInputMode = "adjustResize" />
+
+        <!-- 地图附近的人 -->
+        <activity android:name=".view.map.MapNearbyActivity" />
+
+        <!-- 用户详情页面 -->
+        <activity android:name=".view.group.user.UserInfoActivity" />
+
+        <!-- 用户资料设置页面 -->
+        <activity android:name=".view.group.user.UserSettingActivity" />
+
+        <!-- 更新状态页面 -->
+        <activity android:name=".view.group.user.UpdateStatusActivity" />
+
+        <!-- 编辑头像页面 -->
+        <activity android:name=".view.group.user.UpdateAvatarActivity" />
+
+        <!-- 编辑昵称页面 -->
+        <activity android:name=".view.group.user.UpdateNameActivity" />
+
+        <!-- 创建小组页面 -->
+        <activity android:name=".view.group.group.CreateGroupsActivity" />
+
+        <!-- 群聊详情页面 -->
+        <activity android:name=".view.group.group.GroupInfoActivity" />
+
+        <!-- 小组成员列表页面 -->
+        <activity android:name=".view.group.group.GroupMemberActivity" />
+
+        <!-- 选择群聊人员页面 -->
+        <activity android:name=".view.group.group.SelectMemberActivity" />
+
+        <!-- 搜索页面 -->
+        <activity android:name=".view.group.search.SearchActivity" />
+
+        <!-- 首页 -->
+        <activity android:name=".view.MainActivity" android:windowSoftInputMode = "stateAlwaysHidden|adjustPan"/>
+
+        <!-- 消息页面 -->
+        <activity android:name=".view.message.MessagesActivity" />
+
+        <!-- 消息加载过度页 -->
+        <activity android:name=".view.message.MessagesExcessiveActivity"  />
+
+        <!-- 单聊页面 -->
+        <activity android:name=".view.message.ChatActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+
+            <!-- 华为离线推送打开应用内页面 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="com.tencent.qcloud"
+                    android:path="/detail"
+                    android:scheme="pushscheme" />
+            </intent-filter>
+
+            <!-- OPPO离线推送的intent action方式必须配置category且不能有data数据 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- OPPO离线推送的scheme url方式必须配置action和category -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                    android:scheme="pushscheme"
+                    android:host="com.tencent.qcloud"/>
+            </intent-filter>
+
+        </activity>
+
+        <!-- WebView H5页面 -->
+        <activity android:name=".view.message.WebViewActivity" />
+
+        <!-- 语音聊天室主播页面 -->
+        <activity
+            android:name=".tencent.ui.room.VoiceRoomAnchorActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/ChatTheme"
+            android:screenOrientation="portrait" />
+
+        <!-- 语音聊天室观众页面 -->
+        <activity
+            android:name=".tencent.ui.room.VoiceRoomAudienceActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/ChatTheme"
+            android:screenOrientation="portrait" />
+
+        <!-- 腾讯云语音聊天室房间列表页面 -->
+        <activity
+            android:name=".tencent.ui.list.VoiceRoomListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@style/ChatTheme"
+            android:screenOrientation="portrait" />
+
+        <!-- 跳转图片裁剪页面 -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <!--Android7.0后临时访问权限-->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.queerlab.chat.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path">
+
+            </meta-data>
+        </provider>
+
+        <!-- 腾讯地图 -->
+        <meta-data
+            android:name="TencentMapSDK"
+            android:value="PZLBZ-DDU6X-CEN4O-TPMV7-MVUZO-PPBKT"/>
+
+        <!-- ********小米推送service和receiver设置start******** -->
+        <service
+            android:name="com.xiaomi.push.service.XMPushService"
+            android:enabled="true"
+            android:process=":pushservice" />
+        <service
+            android:name="com.xiaomi.push.service.XMJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":pushservice" />
+
+        <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
+        <service
+            android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name="com.xiaomi.mipush.sdk.MessageHandleService"
+            android:enabled="true" />
+
+        <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
+        <receiver
+            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.xiaomi.push.service.receivers.PingReceiver"
+            android:exported="false"
+            android:process=":pushservice">
+            <intent-filter>
+                <action android:name="com.xiaomi.push.PING_TIMER" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 自实现小米推送的接收广播 -->
+        <receiver
+            android:name="com.queerlab.chat.push.XiaomiMsgReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR" />
+            </intent-filter>
+        </receiver>
+        <!-- ********小米推送service和receiver设置end******** -->
+
+        <!-- ********华为推送设置start******** -->
+        <service
+            android:name="com.queerlab.chat.push.HUAWEIHmsMessageService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data tools:replace="android:value"
+            android:name="com.huawei.hms.client.appid"
+            android:value="104659701" />
+        <!-- ********华为推送设置end******** -->
+
+        <!-- ********vivo推送设置start******** -->
+        <service
+            android:name="com.vivo.push.sdk.service.CommandClientService"
+            android:exported="true" />
+
+        <activity
+            android:name="com.vivo.push.sdk.LinkProxyClientActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- push应用定义消息receiver声明 -->
+        <receiver android:name="com.queerlab.chat.push.VIVOPushMessageReceiverImpl">
+            <intent-filter>
+
+                <!-- 接收push消息 -->
+                <action android:name="com.vivo.pushclient.action.RECEIVE" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data tools:replace="android:value"
+            android:name="com.vivo.push.api_key"
+            android:value="b3759a42e162e5b0300743883294b75f" />
+        <meta-data tools:replace="android:value"
+            android:name="com.vivo.push.app_id"
+            android:value="105507162" />
+        <!-- ********vivo推送设置end******** -->
+
+        <!-- ********OPPO 推送 start******** -->
+        <service
+            android:name="com.heytap.msp.push.service.CompatibleDataMessageCallbackService"
+
+            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
+            <intent-filter>
+                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>
+            </intent-filter>
+        </service> <!--兼容Q以下版本-->
+
+        <service
+            android:name="com.heytap.msp.push.service.DataMessageCallbackService"
+
+            android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
+
+            <intent-filter>
+                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>
+
+                <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE"/>
+            </intent-filter>
+        </service> <!--兼容Q版本-->
+        <!-- ********OPPO 推送 end******** -->
+
+    </application>
+
+</manifest>

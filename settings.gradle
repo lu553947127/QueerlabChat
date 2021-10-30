@@ -1,0 +1,4 @@
+include ':app'
+include ':tuikit'
+include ':tuikit-live'
+rootProject.name = "QueerlabChat"

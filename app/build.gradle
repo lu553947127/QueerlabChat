@@ -1,0 +1,141 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.queerlab.chat"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips64'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    //LiveData+ViewModel
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    //异步工具库
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    //网络请求
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
+    //noinspection GradleDependency
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    //noinspection GradleDependency
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.2'
+    //Gson解析
+    implementation 'com.google.code.gson:gson:2.8.6'
+    //解决超过65546代码的问题
+    implementation 'com.android.support:multidex:1.0.3'
+    //下拉刷新 上拉加载
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.2'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.2'
+    //图片加载——Glide
+    //noinspection GradleDependency
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    //noinspection GradleDependency
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    //全面的开源库总结AndroidUtils Android  AndroidUtilCode
+    //noinspection GradleDependency
+    implementation 'com.blankj:utilcode:1.25.9'
+    //简化组件之间的通信工具
+    implementation 'org.greenrobot:eventbus:3.2.0'
+    //黄油刀
+    //noinspection AnnotationProcessorOnCompilePath,GradleDependency
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    //noinspection GradleDependency
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    //万能适配器
+    //noinspection GradleDependency
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
+    //app版本更新 后台通知下载
+    implementation 'com.king.app:app-updater:1.0.8-androidx'
+    //支持手势放大、下拉关闭 查看图片框架
+    implementation 'com.github.SherlockGougou:BigImageViewPager:androidx-5.0.4'
+    //通用弹窗
+    implementation 'com.lxj:xpopup:1.9.8'
+    //滑动返回框架
+    implementation 'cn.bingoogolapple:bga-swipebacklayout:2.0.1@aar'
+    //选择世界各国区号弹窗
+    implementation 'com.github.joielechong:countrycodepicker:2.4.2'
+    //判断世界各国手机号码合法性
+    implementation 'io.michaelrocks:libphonenumber-android:8.12.15'
+    //仿爱奇艺/腾讯视频导航条
+    implementation 'com.kcrason:dynamicpagerindicator:1.5.0'
+    //权限工具
+    implementation 'com.yanzhenjie:permission:2.0.3'
+    //带右下角计数的输入框
+    implementation 'com.github.FJ917:FJEditTextCount:v1.0.3'
+    //知乎图片选择器
+    implementation 'com.zhihu.android:matisse:0.5.3-beta3'
+    //鲁班压缩
+    implementation 'top.zibin:Luban:1.1.8'
+    //带侧滑删除的列表
+    implementation 'com.yanzhenjie.recyclerview:x:1.3.2'
+    //原生渲染After Effects动画
+    implementation 'com.airbnb.android:lottie:3.6.1'
+    //页面侧滑返回
+    implementation 'com.github.goweii:SwipeBack:2.0.0'
+    //图片裁剪框架
+    implementation 'com.github.yalantis:ucrop:2.2.6-native'
+    //MVVM设计模式的一套快速开发库，整合Okhttp+RxJava+Retrofit+Glide等主流模块
+    implementation 'com.github.goldze:MVVMHabit:4.0.0'
+
+    //腾讯地图 基本sdk
+    implementation 'com.tencent.map:tencent-map-vector-sdk:4.3.5'
+    //腾讯地图 地图组件库
+    implementation 'com.tencent.map:sdk-utilities:1.0.6'
+    //腾讯地图 地图定位库
+    implementation 'com.tencent.map.geolocation:TencentLocationSdk-openplatform:7.3.0'
+    //腾讯即时通讯ui库
+//    implementation 'com.tencent.imsdk:tuikit:5.1.56'
+    implementation project(':tuikit')
+    //腾讯音视频ui库
+    implementation project(':tuikit-live')
+
+    // 小米
+    implementation "com.tencent.tpns:xiaomi:1.2.1.2-release"
+    // OPPO
+    implementation "com.tencent.tpns:oppo:1.2.1.2-release"
+    // vivo
+    implementation "com.tencent.tpns:vivo:1.2.1.2-release"
+    // 华为
+    implementation 'com.tencent.tpns:huawei:1.2.1.3-release'
+    //华为推送模块
+    implementation 'com.huawei.hms:push:5.0.2.300'
+
+    //圆形头像
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    //毕加索图片加载框架
+    implementation 'com.squareup.picasso:picasso:2.71828'
+}

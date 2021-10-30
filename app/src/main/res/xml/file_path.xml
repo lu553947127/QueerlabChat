@@ -1,0 +1,25 @@
+<paths>
+    <!--该方式对应Context.getFilesDir()返回的路径-->
+    <files-path
+        name="file_pic"
+        path="filePic" />
+    <!--该方式对应Context.getCacheDir()返回的路径-->
+    <cache-path
+        name="cache_pic"
+        path="cachePic" />
+    <!--该方式对应Environment.getExternalStorageDirectory()返回的路径-->
+    <!--这个path为项目当中使用到的，其他均为示例-->
+    <external-path
+        name="external_pic"
+        path="externalPic" />
+    <!--该方式对应Context.getExternalFilesDir()返回的路径-->
+    <external-files-path
+        name="external_file_pic"
+        path="externalFilePic" />
+    <!--该方式对应Context.getExternalCacheDir()返回的路径-->
+    <external-cache-path
+        name="external_cache_pic"
+        path="externalCachePic" />
+
+    <external-path name="Pictures" path="."/>
+</paths>

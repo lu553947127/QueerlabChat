@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <View
+        android:id="@+id/fake_status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_bar_back"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:src="@drawable/icon_back"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:text="今天有什么新想法？"/>
+
+    <fj.edittextcount.lib.FJEditTextCount
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:padding="10dp"
+        android:background="@drawable/shape_gray_25"
+        app:etHintColor="@color/color_979797"
+        app:etLineColor="@android:color/transparent"
+        app:etMaxLength="50"
+        app:etMinHeight="88dp"
+        app:etPromptTextColor="@color/color_B7B7B7"
+        app:etPromptTextSize="15sp"
+        app:etTextColor="@color/black"
+        app:etTextSize="18sp"
+        app:etType="percentage"
+        app:etHint="请输入"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_ok"
+        android:layout_width="180dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="80dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/selector_login"
+        android:gravity="center"
+        android:textColor="@drawable/selector_text"
+        android:textSize="18sp"
+        android:text="@string/OK"/>
+
+</LinearLayout>

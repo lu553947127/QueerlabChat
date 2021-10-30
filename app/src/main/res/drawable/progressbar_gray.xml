@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="oval" >
+            <corners android:radius="90dp"/>
+            <gradient
+                android:startColor="@color/color_ECECEC"
+                android:endColor="@color/color_ECECEC"
+                android:angle="45"/>
+            <size android:width="170dp" android:height="170dp"/>
+        </shape>
+    </item>
+
+    <item android:bottom="8dp" android:right="8dp" android:top="8dp" android:left="8dp" >
+        <selector xmlns:android="http://schemas.android.com/apk/res/android"
+            tools:ignore="RedundantNamespace">
+            <item android:state_pressed="true">
+                <shape android:shape="oval" >
+                    <corners android:radius="90dp"/>
+                    <gradient
+                        android:startColor="@color/color_ECECEC"
+                        android:endColor="@color/color_ECECEC"
+                        android:angle="45"/>
+                    <size android:width="162dp" android:height="162dp"/>
+                </shape>
+            </item>
+
+            <item>
+                <shape android:shape="oval" >
+                    <corners android:radius="90dp"/>
+                    <gradient
+                        android:startColor="@color/color_ECECEC"
+                        android:endColor="@color/color_ECECEC"
+                        android:angle="45"/>
+                    <size android:width="162dp" android:height="162dp"/>
+                </shape>
+            </item>
+
+        </selector>
+    </item>
+</layer-list>

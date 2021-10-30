@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:orientation="horizontal"
+    android:layout_marginTop="30dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:id="@+id/rl_toolbar">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_search"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/shape_gray2_10"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/icon_search_gray"
+        android:textColor="@color/color_C7C9CF"
+        android:text="@string/index_search"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"/>
+
+    <RelativeLayout
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_gravity="center_vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_messages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_messages"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_messages_unread"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_messages_unread"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

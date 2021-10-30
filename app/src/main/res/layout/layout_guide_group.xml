@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="80dp"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/icon_guide_bg"
+    android:id="@+id/ll_group">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:text="✈️相约去大理"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:text="10人💬/123"/>
+
+</LinearLayout>

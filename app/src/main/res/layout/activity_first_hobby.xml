@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <View
+        android:id="@+id/fake_status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_bar_back"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/fake_status_bar"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:src="@drawable/icon_back"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="25dp"
+        android:textColor="@color/color_C6C6C6"
+        android:textSize="13sp"
+        android:text="@string/skip"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:text="@string/login_add_hobby"/>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="100dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <com.queerlab.chat.widget.CustomEditText
+                android:id="@+id/et_hobby"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_gray_25"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:theme="@style/EditText"
+                android:maxLength="10"
+                android:imeOptions="actionGo"
+                android:inputType="text"
+                android:textColorHint="@color/color_4D4D4D"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_add"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/selector_login"
+                android:layout_marginLeft="20dp"
+                android:enabled="true"
+                android:gravity="center"
+                android:textColor="@drawable/selector_text"
+                android:textSize="18sp"
+                android:text="@string/add"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/color_C1C1C1"
+            android:textSize="13sp"
+            android:text="@string/hobby_tips"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_next"
+            android:layout_width="180dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="80dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/selector_login"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text"
+            android:textSize="18sp"
+            android:text="@string/complete"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
