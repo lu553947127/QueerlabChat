@@ -1,7 +1,9 @@
 package com.queerlab.chat.view;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.queerlab.chat.R;
 import com.queerlab.chat.adapter.ActivityAdapter;
@@ -17,6 +20,7 @@ import com.queerlab.chat.adapter.MapNearbyAdapter;
 import com.queerlab.chat.app.MyApplication;
 import com.queerlab.chat.base.BaseFragment;
 import com.queerlab.chat.base.EmptyViewFactory;
+import com.queerlab.chat.bean.BaseBean;
 import com.queerlab.chat.bean.LocationUserBean;
 import com.queerlab.chat.dialog.AnimationDialog;
 import com.queerlab.chat.dialog.PublicTextDialog;
@@ -27,10 +31,12 @@ import com.queerlab.chat.tencent.TUIKitUtil;
 import com.queerlab.chat.utils.LocationUtils;
 import com.queerlab.chat.utils.PermissionUtils;
 import com.queerlab.chat.utils.RefreshUtils;
+import com.queerlab.chat.view.activity.ActivityDetailActivity;
 import com.queerlab.chat.view.group.user.UserInfoActivity;
 import com.queerlab.chat.view.map.MapNearbyActivity;
 import com.queerlab.chat.viewmodel.MapViewModel;
 import com.queerlab.chat.viewmodel.UserViewModel;
+import com.queerlab.chat.widget.popup.CommonPopupWindow;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -38,9 +44,17 @@ import com.tencent.map.sdk.utilities.heatmap.HeatMapTileProvider;
 import com.tencent.tencentmap.mapsdk.maps.CameraUpdateFactory;
 import com.tencent.tencentmap.mapsdk.maps.MapView;
 import com.tencent.tencentmap.mapsdk.maps.TencentMap;
+import com.tencent.tencentmap.mapsdk.maps.model.BitmapDescriptor;
+import com.tencent.tencentmap.mapsdk.maps.model.BitmapDescriptorFactory;
+import com.tencent.tencentmap.mapsdk.maps.model.CameraPosition;
+import com.tencent.tencentmap.mapsdk.maps.model.LatLng;
+import com.tencent.tencentmap.mapsdk.maps.model.Marker;
+import com.tencent.tencentmap.mapsdk.maps.model.MarkerOptions;
 import com.tencent.tencentmap.mapsdk.maps.model.TileOverlay;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -82,6 +96,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
     private UserViewModel userViewModel;
     private MapNearbyAdapter mapNearbyAdapter;
     private LocationEvent locationEvent;
+    private CommonPopupWindow commonPopupWindow;
 
     @Override
     protected int initLayout() {
@@ -108,6 +123,10 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         recyclerViewActivity.setLayoutManager(new LinearLayoutManager(mActivity));
         ActivityAdapter activityAdapter = new ActivityAdapter(R.layout.adapter_activity, RefreshUtils.getGroupListType());
         recyclerViewActivity.setAdapter(activityAdapter);
+
+        activityAdapter.setOnItemClickListener((adapter, view, position) -> {
+            ActivityUtils.startActivity(ActivityDetailActivity.class);
+        });
 
         mapNearbyAdapter.setOnItemClickListener((adapter, view, position) -> {
             LocationUserBean.ListBean listBean = mapNearbyAdapter.getData().get(position);
@@ -170,6 +189,9 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
                 mapViewModel.locationUserMore(String.valueOf(locationEvent.getLongitude()), String.valueOf(locationEvent.getLatitude()));
             }
         });
+
+        smartRefreshLayoutActivity.setEnableRefresh(false);
+        smartRefreshLayoutActivity.setEnableLoadMore(false);
     }
 
     @Override
@@ -177,6 +199,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
 //        tileOverlay = TUIKitUtil.getLocalHeatMapList(mActivity,this, tencentMap, tileOverlay);
         initMap();
         mapViewModel.heatMapList();
+        setMarker();
     }
 
     //地图初始化
@@ -199,6 +222,20 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
             bundle.putDouble("longitude", latLng.longitude);
             bundle.putDouble("latitude", latLng.latitude);
             ActivityUtils.startActivity(bundle, MapNearbyActivity.class);
+        });
+
+        //地图平滑移动监听
+        tencentMap.setOnCameraChangeListener(new TencentMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+
+            }
+
+            @Override
+            public void onCameraChangeFinished(CameraPosition cameraPosition) {
+//                ToastUtils.showShort( cameraPosition.target.latitude + "----" + cameraPosition.target.latitude);
+                clearPopupWindow();
+            }
         });
     }
 
@@ -233,12 +270,80 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         }
     }
 
+    ///设置马克点
+    public Marker mCustomMarker;
+    private void setMarker() {
+        ArrayList<MarkerOptions> markers = new ArrayList<>();
+        for (BaseBean baseBean : RefreshUtils.getMarkerList()) {
+            BitmapDescriptor custom = BitmapDescriptorFactory.fromResource(baseBean.getMarkerDrawable());
+            MarkerOptions markerOptions = new MarkerOptions(new LatLng(baseBean.getLatitude(),baseBean.getLongitude()))
+                    .icon(custom)//添加马克点自定义icon
+                    .title(baseBean.getTitle())//马克点点击显示title
+                    .tag(baseBean.getTag())//马克点主键
+                    .flat(true);//马克点是否支持3d
+            markers.add(markerOptions);
+            mCustomMarker = tencentMap.addMarker(markerOptions);
+        }
+        mCustomMarker.setClickable(true);
+        mCustomMarker.hideInfoWindow();
+
+        ///马克点点击监听
+        tencentMap.setOnMarkerClickListener(marker -> {
+//            ToastUtils.showShort("马克被电击" + marker.getId() + marker.getTitle() + marker.getTag());
+            showPopWindow();
+            return false;
+        });
+    }
+
+    /**
+     * 弹出活动弹窗
+     */
+    private void showPopWindow() {
+        if (commonPopupWindow == null) {
+            commonPopupWindow = new CommonPopupWindow.Builder(mActivity)
+                    .setView(R.layout.dialog_custom_marker)
+                    .setOutsideTouchable(false)
+                    .setBackGroundLevel(1f)
+                    .setWidthAndHeight(ConvertUtils.dp2px(320), ViewGroup.LayoutParams.WRAP_CONTENT)
+                    .setAnimationStyle(R.style.DialogAnimBottom)
+                    .setViewOnclickListener((view, layoutResId) -> {
+//                        tvTitle = view.findViewById(R.id.tv_title);
+
+                        view.setOnClickListener(v -> {
+                            ActivityUtils.startActivity(ActivityDetailActivity.class);
+                        });
+                    })
+                    .create();
+        }
+//        tvTitle.setText(title);
+        if (!commonPopupWindow.isShowing()) {
+            commonPopupWindow.showAtLocation(mActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, ConvertUtils.dp2px(65));
+        }
+    }
+
+    /**
+     * 清楚弹窗
+     */
+    private void clearPopupWindow() {
+        if (commonPopupWindow != null) {
+            if (commonPopupWindow.isShowing()) {
+                commonPopupWindow.dismiss();
+            }
+            commonPopupWindow = null;
+        }
+
+        if (mCustomMarker != null && mCustomMarker.isInfoWindowShown()){
+            mCustomMarker.hideInfoWindow();
+        }
+    }
+
     @OnClick({R.id.tv_screen, R.id.tv_map, R.id.tv_user, R.id.tv_activity})
     void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_screen://列表模式
                 llList.setVisibility(View.VISIBLE);
                 llMap.setVisibility(View.GONE);
+                clearPopupWindow();
                 break;
             case R.id.tv_map://探索模式
                 llList.setVisibility(View.GONE);
@@ -284,6 +389,8 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         if (PermissionUtils.isCheckPermission(mActivity)){
             LocationUtils.getInstance().stopLocalService();
         }
+
+        clearPopupWindow();
     }
 
     /**

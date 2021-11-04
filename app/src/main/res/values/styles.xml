@@ -91,6 +91,12 @@
         <item name="capture.textColor">@color/dracula_capture</item>
     </style>
 
+    <!--底部弹出动画-->
+    <style name="DialogAnimBottom" parent="android:Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/push_bottom</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+
 
     <!--腾讯云语音聊天室style-->
 

@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
-    android:paddingBottom="65dp">
+    android:background="@color/white">
 
     <include layout="@layout/toolbar_layout"/>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="65dp">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

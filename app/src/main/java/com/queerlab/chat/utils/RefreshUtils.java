@@ -80,12 +80,31 @@ public class RefreshUtils {
         return list;
     }
 
+    //测试马克点定位
+    public static List<BaseBean> getMarkerList(){
+        List<BaseBean> list =new ArrayList<>();
+        list.add(new BaseBean("1", "活动1", 36.686154,117.110479, R.drawable.icon_marker));
+        list.add(new BaseBean("2", "活动2", 36.682289,117.129571, R.drawable.icon_marker));
+        list.add(new BaseBean("3", "活动3", 36.676456,117.156483, R.drawable.icon_marker));
+        list.add(new BaseBean("4", "活动4", 36.67106,117.124662, R.drawable.icon_marker));
+        list.add(new BaseBean("5", "活动5", 36.6688,117.129117, R.drawable.icon_marker));
+        list.add(new BaseBean("6", "活动6", 36.659538,117.159847, R.drawable.icon_marker));
+        list.add(new BaseBean("7", "活动7", 36.654724,117.123116, R.drawable.icon_marker));
+        list.add(new BaseBean("8", "活动8", 36.662892,117.143209, R.drawable.icon_marker));
+        list.add(new BaseBean("9", "活动9", 36.660121,117.150482, R.drawable.icon_marker));
+        list.add(new BaseBean("10", "活动10", 36.652682,117.162483, R.drawable.icon_marker));
+        list.add(new BaseBean("11", "活动11", 36.656547,117.13439, R.drawable.icon_marker));
+        return list;
+    }
+
     //小组类型列表
     public static List<BaseBean> getGroupListType(){
         List<BaseBean> list =new ArrayList<>();
         list.add(new BaseBean("\uD83C\uDF08", "全部"));
         list.add(new BaseBean("\uD83D\uDCCD", "附近"));
         list.add(new BaseBean("\uD83C\uDFAE", "游戏"));
+        list.add(new BaseBean("\uD83C\uDF39", "情人节"));
+        list.add(new BaseBean("⚽", "运动"));
         list.add(new BaseBean("\uD83C\uDF39", "情人节"));
         list.add(new BaseBean("⚽", "运动"));
         return list;

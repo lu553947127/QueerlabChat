@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:roundiv="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/shape_wathet_25"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <com.queerlab.chat.widget.CornerImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginLeft="17dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerCrop"
+        roundiv:radius="15dp"
+        android:src="@drawable/app_icon"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="周日畅饮"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:drawableLeft="@drawable/icon_address"
+            android:drawablePadding="5dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="上海因西南麓26号"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_initiator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:drawableLeft="@drawable/icon_initiator"
+            android:drawablePadding="5dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="ABC老年迪斯科舞厅" />
+
+    </LinearLayout>
+
+</LinearLayout>

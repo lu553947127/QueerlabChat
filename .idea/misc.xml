@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/drawable/svg_icon_voice.xml" value="0.3101851851851852" />
         <entry key="app/src/main/res/layout/aactivt_mm.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/activity_activity_detail.xml" value="0.1831306990881459" />
+        <entry key="app/src/main/res/layout/activity_create_groups.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/activity_first_hobby.xml" value="0.20606884057971014" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/activity_messages.xml" value="0.1831306990881459" />
@@ -33,6 +34,7 @@
         <entry key="app/src/main/res/layout/adapter_interest.xml" value="0.20606884057971014" />
         <entry key="app/src/main/res/layout/adapter_map_nearby.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/chat_input_layout.xml" value="0.2259963768115942" />
+        <entry key="app/src/main/res/layout/dialog_custom_marker.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/fragment_active.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/fragment_index.xml" value="0.175" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.1" />

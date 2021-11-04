@@ -17,6 +17,42 @@ public class BaseBean {
     String tag;
     String title;
 
+    private double latitude;
+    private double longitude;
+    private int markerDrawable;
+
+    public BaseBean(String tag, String title, double latitude, double longitude, int markerDrawable) {
+        this.tag = tag;
+        this.title = title;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.markerDrawable = markerDrawable;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public int getMarkerDrawable() {
+        return markerDrawable;
+    }
+
+    public void setMarkerDrawable(int markerDrawable) {
+        this.markerDrawable = markerDrawable;
+    }
+
     public BaseBean(String tag, String title) {
         this.tag = tag;
         this.title = title;
