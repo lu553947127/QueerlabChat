@@ -3,6 +3,7 @@ package com.queerlab.chat.view.group.group;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,12 +15,18 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.queerlab.chat.R;
 import com.queerlab.chat.adapter.GroupTagAdapter;
 import com.queerlab.chat.base.BaseActivity;
+import com.queerlab.chat.base.EmptyViewFactory;
+import com.queerlab.chat.bean.GroupEmoBean;
 import com.queerlab.chat.event.GroupEvent;
 import com.queerlab.chat.listener.OnCustomCallBack;
+import com.queerlab.chat.utils.AnimatorUtils;
 import com.queerlab.chat.utils.RefreshUtils;
 import com.queerlab.chat.tencent.TUIKitUtil;
 import com.queerlab.chat.view.login.FirstNameActivity;
 import com.queerlab.chat.viewmodel.GroupViewModel;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,6 +50,8 @@ public class CreateGroupsActivity extends BaseActivity {
     View fakeStatusBar;
     @BindView(R.id.tv_emoji)
     AppCompatTextView tvEmoji;
+    @BindView(R.id.refresh)
+    SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.rv)
     RecyclerView recyclerView;
     @BindView(R.id.tv_next)
@@ -67,12 +76,13 @@ public class CreateGroupsActivity extends BaseActivity {
         groupType = String.valueOf(RefreshUtils.getEmoji().get(41));
         tvEmoji.setText(groupType);
 
-        GroupTagAdapter groupTagAdapter = new GroupTagAdapter(R.layout.adapter_group_tag, RefreshUtils.getEmoji());
+        GroupTagAdapter groupTagAdapter = new GroupTagAdapter(R.layout.adapter_group_tag, null);
         recyclerView.setLayoutManager(new GridLayoutManager(activity, 8, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(groupTagAdapter);
 
         groupTagAdapter.setOnItemClickListener((adapter, view, position) -> {
-            groupType = groupTagAdapter.getData().get(position);
+            GroupEmoBean.ListBean listBean = groupTagAdapter.getData().get(position);
+            groupType = listBean.getCharacter();
             tvEmoji.setText(groupType);
         });
 
@@ -86,10 +96,46 @@ public class CreateGroupsActivity extends BaseActivity {
             finish();
         });
 
-        //加载动画返回结果
-        groupViewModel.pageStateLiveData.observe(activity, s -> {
-            showPageState(s);
+        //获取推荐小组成功返回结果
+        groupViewModel.groupEmoLiveData.observe(activity, groupEmoBean -> {
+            if (groupEmoBean.getPageNum() == 1) {
+                groupTagAdapter.setNewData(groupEmoBean.getList());
+                groupTagAdapter.setEmptyView(EmptyViewFactory.createEmptyView(activity, getString(R.string.not_empty_emo)));
+            } else {
+                groupTagAdapter.addData(groupTagAdapter.getData().size(), groupEmoBean.getList());
+            }
+            RefreshUtils.setNoMore(smartRefreshLayout, groupEmoBean.getPageNum(), groupEmoBean.getTotal());
         });
+
+        //刷新和加载
+        smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                groupViewModel.getGroupEmo();
+            }
+
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                groupViewModel.getGroupEmoMore();
+            }
+        });
+
+
+        //滑动监听
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                AnimatorUtils.listScrollAnimation(tvNext, dy);
+            }
+        });
+
+//        //加载动画返回结果
+//        groupViewModel.pageStateLiveData.observe(activity, s -> {
+//            showPageState(s);
+//        });
+
+        groupViewModel.getGroupEmo();
     }
 
     @OnClick({R.id.iv_bar_back, R.id.tv_next})
@@ -111,7 +157,8 @@ public class CreateGroupsActivity extends BaseActivity {
         TUIKitUtil.createGroup(groupType + getIntent().getStringExtra("name"), new OnCustomCallBack() {
             @Override
             public void onSuccess(Object data) {
-                groupViewModel.groupAdd(String.valueOf(data), getIntent().getStringExtra("name"), groupType);
+                groupViewModel.groupAdd(String.valueOf(data), getIntent().getStringExtra("name")
+                        , groupType, getIntent().getStringExtra("classId"));
             }
 
             @Override

@@ -1,6 +1,8 @@
 package com.queerlab.chat.http.api;
 
+import com.queerlab.chat.bean.GroupEmoBean;
 import com.queerlab.chat.bean.GroupRoomIdBean;
+import com.queerlab.chat.bean.GroupTypeBean;
 import com.queerlab.chat.bean.HeatMapListBean;
 import com.queerlab.chat.bean.LocationUserBean;
 import com.queerlab.chat.bean.LoginBean;
@@ -183,7 +185,8 @@ public interface ApiService {
             @Field("groupNo") String groupNo,
             @Field("groupName") String groupName,
             @Field("groupType") String groupType,
-            @Field("userId") String userId
+            @Field("userId") String userId,
+            @Field("classId") String classId
     );
 
     //用户加入小组
@@ -254,6 +257,23 @@ public interface ApiService {
     @POST("/group/queryRoomId")
     Flowable<BaseResponse<GroupRoomIdBean>> getGroupRoomId(
             @Field("groupNo") String groupNo
+    );
+
+    //获取活动类型
+    @FormUrlEncoded
+    @POST("/class/app/queryAllClass")
+    Flowable<BaseResponse<GroupTypeBean>> getGroupType(
+            @Field("type") String type,
+            @Field("page") int page,
+            @Field("rows") int rows
+    );
+
+    //获取活动emo表情
+    @FormUrlEncoded
+    @POST("/class/app/queryAllEmo")
+    Flowable<BaseResponse<GroupEmoBean>> getGroupEmo(
+            @Field("page") int page,
+            @Field("rows") int rows
     );
 
     //系统通知

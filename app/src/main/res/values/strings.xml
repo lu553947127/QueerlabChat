@@ -23,6 +23,9 @@
     <string name="not_empty_location">这里荒无人烟\n试试别的地方</string>
     <string name="not_empty_group">暂未找到小组数据</string>
     <string name="not_empty_user">暂未找到用户数据</string>
+    <string name="not_empty_activity">暂未找到活动数据</string>
+    <string name="not_empty_type">暂未找到类型数据</string>
+    <string name="not_empty_emo">暂未找到emjio数据</string>
     <string name="not_search">请输入关键词\n搜索小组和用户</string>
 
     <string name="agreement_title">是否同意用户协议及隐私政策</string>

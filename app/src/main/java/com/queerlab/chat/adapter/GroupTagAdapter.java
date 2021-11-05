@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.queerlab.chat.R;
+import com.queerlab.chat.bean.GroupEmoBean;
 
 import java.util.List;
 
@@ -20,13 +21,13 @@ import java.util.List;
  * @UpdateRemark: 更新说明
  * @Version: 1.0
  */
-public class GroupTagAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public GroupTagAdapter(int layoutResId, @Nullable List<String> data) {
+public class GroupTagAdapter extends BaseQuickAdapter<GroupEmoBean.ListBean, BaseViewHolder> {
+    public GroupTagAdapter(int layoutResId, @Nullable List<GroupEmoBean.ListBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-        helper.setText(R.id.tv_title, item);
+    protected void convert(BaseViewHolder helper, GroupEmoBean.ListBean item) {
+        helper.setText(R.id.tv_title, item.getCharacter());
     }
 }

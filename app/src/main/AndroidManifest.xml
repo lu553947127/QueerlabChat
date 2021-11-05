@@ -99,6 +99,9 @@
         <!-- 创建小组页面 -->
         <activity android:name=".view.group.group.CreateGroupsActivity" />
 
+        <!-- 创建小组选择类型页面 -->
+        <activity android:name=".view.group.group.CreateGroupTypeActivity" />
+
         <!-- 群聊详情页面 -->
         <activity android:name=".view.group.group.GroupInfoActivity" />
 

@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.BarUtils;
 import com.queerlab.chat.R;
 import com.queerlab.chat.base.BaseActivity;
+import com.queerlab.chat.view.group.group.CreateGroupTypeActivity;
 import com.queerlab.chat.view.group.group.CreateGroupsActivity;
 import com.queerlab.chat.widget.CustomEditText;
 
@@ -73,7 +74,7 @@ public class FirstNameActivity extends BaseActivity {
                     ActivityUtils.startActivity(bundle, FirstHobbyActivity.class);
                     finish();
                 }else {
-                    ActivityUtils.startActivity(bundle, CreateGroupsActivity.class);
+                    ActivityUtils.startActivity(bundle, CreateGroupTypeActivity.class);
                 }
                 break;
         }
