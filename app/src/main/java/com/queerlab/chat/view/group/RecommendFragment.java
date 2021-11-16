@@ -98,12 +98,12 @@ public class RecommendFragment extends BaseLazyFragment {
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                groupViewModel.groupList();
+//                groupViewModel.groupList();
             }
 
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                groupViewModel.groupListMore();
+//                groupViewModel.groupListMore();
             }
         });
 
@@ -119,7 +119,7 @@ public class RecommendFragment extends BaseLazyFragment {
 
     @Override
     protected void initDataFromService() {
-        groupViewModel.groupList();
+//        groupViewModel.groupList();
     }
 
     /**
@@ -129,6 +129,6 @@ public class RecommendFragment extends BaseLazyFragment {
      */
     @Subscribe
     public void onEventCreate(GroupEvent event){
-        groupViewModel.groupList();
+//        groupViewModel.groupList();
     }
 }

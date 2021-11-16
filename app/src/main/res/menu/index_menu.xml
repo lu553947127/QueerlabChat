@@ -5,14 +5,21 @@
         android:id="@+id/menu_index"
         android:icon="@drawable/selector_menu_index"
         android:title="@string/index" />
+
     <item
         android:id="@+id/menu_find"
         android:icon="@drawable/selector_menu_find"
         android:title="@string/find" />
+
     <item
         android:id="@+id/menu_activity"
         android:icon="@drawable/selector_menu_activity"
         android:title="@string/activity" />
+
+    <item
+        android:id="@+id/menu_message"
+        android:icon="@drawable/selector_menu_activity"
+        android:title="@string/message" />
 
     <item
         android:id="@+id/menu_mine"

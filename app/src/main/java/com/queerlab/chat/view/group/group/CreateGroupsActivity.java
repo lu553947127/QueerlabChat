@@ -24,6 +24,7 @@ import com.queerlab.chat.utils.RefreshUtils;
 import com.queerlab.chat.tencent.TUIKitUtil;
 import com.queerlab.chat.view.login.FirstNameActivity;
 import com.queerlab.chat.viewmodel.GroupViewModel;
+import com.queerlab.chat.viewmodel.NewGroupViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -59,6 +60,7 @@ public class CreateGroupsActivity extends BaseActivity {
     //小组标识
     private String groupType;
     private GroupViewModel groupViewModel;
+    private NewGroupViewModel newGroupViewModel;
 
     @Override
     protected int initLayoutRes() {
@@ -87,17 +89,19 @@ public class CreateGroupsActivity extends BaseActivity {
         });
 
         groupViewModel = getViewModel(GroupViewModel.class);
+        newGroupViewModel = getViewModel(NewGroupViewModel.class);
 
         //创建小组成功返回结果
         groupViewModel.groupAddLiveData.observe(activity, s ->{
             ToastUtils.showShort("创建小组成功");
             EventBus.getDefault().post(new GroupEvent("create"));
             ActivityUtils.finishActivity(FirstNameActivity.class);
+            ActivityUtils.finishActivity(CreateGroupTypeActivity.class);
             finish();
         });
 
         //获取推荐小组成功返回结果
-        groupViewModel.groupEmoLiveData.observe(activity, groupEmoBean -> {
+        newGroupViewModel.groupEmoLiveData.observe(activity, groupEmoBean -> {
             if (groupEmoBean.getPageNum() == 1) {
                 groupTagAdapter.setNewData(groupEmoBean.getList());
                 groupTagAdapter.setEmptyView(EmptyViewFactory.createEmptyView(activity, getString(R.string.not_empty_emo)));
@@ -111,12 +115,12 @@ public class CreateGroupsActivity extends BaseActivity {
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                groupViewModel.getGroupEmo();
+                newGroupViewModel.getGroupEmo();
             }
 
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                groupViewModel.getGroupEmoMore();
+                newGroupViewModel.getGroupEmoMore();
             }
         });
 
@@ -130,12 +134,12 @@ public class CreateGroupsActivity extends BaseActivity {
             }
         });
 
-//        //加载动画返回结果
-//        groupViewModel.pageStateLiveData.observe(activity, s -> {
-//            showPageState(s);
-//        });
+        //加载动画返回结果
+        groupViewModel.pageStateLiveData.observe(activity, s -> {
+            showPageState(s);
+        });
 
-        groupViewModel.getGroupEmo();
+        newGroupViewModel.getGroupEmo();
     }
 
     @OnClick({R.id.iv_bar_back, R.id.tv_next})

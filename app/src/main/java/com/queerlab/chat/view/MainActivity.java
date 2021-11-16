@@ -31,7 +31,12 @@ import com.queerlab.chat.push.OPPOPushImpl;
 import com.queerlab.chat.push.PrivateConstants;
 import com.queerlab.chat.push.ThirdPushTokenMgr;
 import com.queerlab.chat.tencent.TUIKitUtil;
+import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.imsdk.v2.V2TIMConversationResult;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
+import com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.vivo.push.IPushActionListener;
 import com.vivo.push.PushClient;
 
@@ -53,7 +58,7 @@ import per.goweii.swipeback.SwipeBackDirection;
  * @UpdateRemark: 更新说明
  * @Version: 1.0
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements ConversationManagerKit.MessageUnreadWatcher{
     @BindView(R.id.fake_status_bar)
     View fakeStatusBar;
     @BindView(R.id.navigation)
@@ -76,12 +81,14 @@ public class MainActivity extends BaseActivity {
     protected void initDataAndEvent(Bundle savedInstanceState) {
         BarUtils.setStatusBarColor(fakeStatusBar, getResources().getColor(R.color.white));
         initFragment();
-//        getBadgeViewInitView();
+        getBadgeViewInitView();
         //初始化会话列表，不然一进入app不加载会话列表,操作会话相关的信息报空指针
         ConversationManagerKit.getInstance().loadConversation(0,null);
         prepareThirdPushToken();
         //腾讯云语音聊天室登录初始化
         TUIKitUtil.getTRTCVoiceRoomLogin(activity);
+        // 未读消息监视器
+        ConversationManagerKit.getInstance().addUnreadWatcher(this);
     }
 
     @NonNull
@@ -98,6 +105,7 @@ public class MainActivity extends BaseActivity {
         mFragments.add(new IndexFragment());
         mFragments.add(new MapFragment());
         mFragments.add(new ActivityFragment());
+        mFragments.add(new MessagesFragment());
         mFragments.add(new MineFragment());
 
         switchFragment(lastFragment,0);lastFragment=0;
@@ -117,9 +125,13 @@ public class MainActivity extends BaseActivity {
                     BarUtils.setStatusBarColor(fakeStatusBar, getResources().getColor(R.color.white));
                     if(lastFragment!=2)switchFragment(lastFragment,2);lastFragment=2;
                     break;
+                case R.id.menu_message:
+                    BarUtils.setStatusBarColor(fakeStatusBar, getResources().getColor(R.color.white));
+                    if(lastFragment!=3)switchFragment(lastFragment,3);lastFragment=3;
+                    break;
                 case R.id.menu_mine:
                     BarUtils.setStatusBarColor(fakeStatusBar, getResources().getColor(R.color.color_F4F7FE));
-                    if(lastFragment!=3)switchFragment(lastFragment,3);lastFragment=3;
+                    if(lastFragment!=4)switchFragment(lastFragment,4);lastFragment=4;
                     break;
                 default:
                     break;
@@ -153,6 +165,7 @@ public class MainActivity extends BaseActivity {
         ids.add(R.id.menu_index);
         ids.add(R.id.menu_find);
         ids.add(R.id.menu_activity);
+        ids.add(R.id.menu_message);
         ids.add(R.id.menu_mine);
         ViewGroup bottomNavigationMenuView = (ViewGroup) navigation.getChildAt(0);
         //遍历子View,重写长按点击事件    
@@ -171,7 +184,7 @@ public class MainActivity extends BaseActivity {
         //获取整个的NavigationView
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) navigation.getChildAt(0);
         //这里就是获取所添加的每一个Tab(或者叫menu)，设置在标题栏的位置
-        View tab = menuView.getChildAt(2);
+        View tab = menuView.getChildAt(3);
         BottomNavigationItemView itemView = (BottomNavigationItemView) tab;
         //加载我们的角标View，新创建的一个布局
         View badge = LayoutInflater.from(this).inflate(R.layout.layout_apply_count, menuView, false);
@@ -204,10 +217,45 @@ public class MainActivity extends BaseActivity {
         HUAWEIHmsMessageService.updateBadge(this, count);
     }
 
+    /**
+     * 设置底部角标显示状态
+     *
+     * @param count 未读消息数量
+     */
+    @Override
+    public void updateUnread(int count) {
+        getMessageUnread(count);
+    }
+
     @Override
     protected void onStop() {
         ConversationManagerKit.getInstance().destroyConversation();
         super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //获取未读消息显示
+        V2TIMManager.getConversationManager().getConversationList(0, 100, new V2TIMValueCallback<V2TIMConversationResult>() {
+            @Override
+            public void onError(int code, String desc) {
+                LogUtils.v( "loadConversation getConversationList error, code = " + code + ", desc = " + desc);
+            }
+
+            @Override
+            public void onSuccess(V2TIMConversationResult v2TIMConversationResult) {
+                ArrayList<ConversationInfo> infos = new ArrayList<>();
+                List<V2TIMConversation> v2TIMConversationList = v2TIMConversationResult.getConversationList();
+                int count = 0;
+                for (V2TIMConversation v2TIMConversation : v2TIMConversationList) {
+                    count += v2TIMConversation.getUnreadCount();
+                }
+//                LogUtils.e("getUnreadCount: " + count);
+                // 华为离线推送角标
+                HUAWEIHmsMessageService.updateBadge(activity, count);
+            }
+        });
     }
 
     /**

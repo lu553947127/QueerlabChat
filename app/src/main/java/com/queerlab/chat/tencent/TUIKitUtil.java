@@ -19,7 +19,6 @@ import com.queerlab.chat.bean.HeatMapListBean;
 import com.queerlab.chat.event.ChatEvent;
 import com.queerlab.chat.event.LoginEvent;
 import com.queerlab.chat.listener.OnCustomCallBack;
-import com.queerlab.chat.push.HUAWEIHmsMessageService;
 import com.queerlab.chat.tencent.model.TRTCVoiceRoom;
 import com.queerlab.chat.tencent.model.TRTCVoiceRoomCallback;
 import com.queerlab.chat.tencent.ui.room.VoiceRoomAnchorActivity;
@@ -28,7 +27,6 @@ import com.queerlab.chat.utils.LoginUtils;
 import com.queerlab.chat.view.message.ChatActivity;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.imsdk.v2.V2TIMConversationResult;
 import com.tencent.imsdk.v2.V2TIMGroupInfo;
 import com.tencent.imsdk.v2.V2TIMGroupInfoResult;
 import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
@@ -38,7 +36,6 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMSendCallback;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
-import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.map.sdk.utilities.heatmap.Gradient;
 import com.tencent.map.sdk.utilities.heatmap.HeatMapTileProvider;
 import com.tencent.map.sdk.utilities.heatmap.WeightedLatLng;
@@ -46,8 +43,6 @@ import com.tencent.qcloud.tim.uikit.TUIKit;
 import com.tencent.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
-import com.tencent.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
-import com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageCustom;
 import com.tencent.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.tencent.qcloud.tim.uikit.utils.TUIKitConstants;
@@ -687,31 +682,6 @@ public class TUIKitUtil {
             @Override
             public void onSuccess() {
                 ToastUtils.showShort("设置成功");
-            }
-        });
-    }
-
-    public static void getMessageUnreadTip(ConversationManagerKit.MessageUnreadWatcher messageUnreadWatcher, BaseActivity activity){
-        // 未读消息监视器
-        ConversationManagerKit.getInstance().addUnreadWatcher(messageUnreadWatcher);
-        //获取未读消息显示
-        V2TIMManager.getConversationManager().getConversationList(0, 100, new V2TIMValueCallback<V2TIMConversationResult>() {
-            @Override
-            public void onError(int code, String desc) {
-                LogUtils.v( "loadConversation getConversationList error, code = " + code + ", desc = " + desc);
-            }
-
-            @Override
-            public void onSuccess(V2TIMConversationResult v2TIMConversationResult) {
-                ArrayList<ConversationInfo> infos = new ArrayList<>();
-                List<V2TIMConversation> v2TIMConversationList = v2TIMConversationResult.getConversationList();
-                int count = 0;
-                for (V2TIMConversation v2TIMConversation : v2TIMConversationList) {
-                    count += v2TIMConversation.getUnreadCount();
-                }
-//                LogUtils.e("getUnreadCount: " + count);
-                // 华为离线推送角标
-                HUAWEIHmsMessageService.updateBadge(activity, count);
             }
         });
     }

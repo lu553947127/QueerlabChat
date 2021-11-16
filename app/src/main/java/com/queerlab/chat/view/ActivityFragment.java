@@ -14,6 +14,7 @@ import com.queerlab.chat.adapter.GroupTypeAdapter;
 import com.queerlab.chat.base.BaseFragment;
 import com.queerlab.chat.utils.RefreshUtils;
 import com.queerlab.chat.view.activity.ActivityDetailActivity;
+import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.widget.HorizontalItemDecoration;
 import com.queerlab.chat.widget.PictureEnlargeUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -43,6 +44,7 @@ public class ActivityFragment extends BaseFragment {
     RecyclerView recyclerViewType;
     @BindView(R.id.rv)
     RecyclerView recyclerView;
+    private ActivityViewModel activityViewModel;
 
     @Override
     protected int initLayout() {
@@ -69,10 +71,8 @@ public class ActivityFragment extends BaseFragment {
 
         recyclerViewType.setLayoutManager(new LinearLayoutManager(mActivity ,LinearLayoutManager.HORIZONTAL,false));
         recyclerViewType.addItemDecoration(new HorizontalItemDecoration(10, mActivity));
-        GroupTypeAdapter groupTypeAdapter = new GroupTypeAdapter(R.layout.adapter_group_type, RefreshUtils.getGroupListType());
+        GroupTypeAdapter groupTypeAdapter = new GroupTypeAdapter(R.layout.adapter_group_type, null);
         recyclerViewType.setAdapter(groupTypeAdapter);
-
-        groupTypeAdapter.setIsSelect(groupTypeAdapter.getData().get(0).getTitle());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         ActivityAdapter activityAdapter = new ActivityAdapter(R.layout.adapter_activity, RefreshUtils.getGroupListType());
@@ -84,10 +84,18 @@ public class ActivityFragment extends BaseFragment {
 
         smartRefreshLayout.setEnableRefresh(false);
         smartRefreshLayout.setEnableLoadMore(false);
+
+        activityViewModel = mActivity.getViewModel(ActivityViewModel.class);
+
+        //获取活动类型列表返回数据
+        activityViewModel.activityTypeLiveData.observe(mActivity, groupTypeBean -> {
+            groupTypeAdapter.setIsSelect(groupTypeBean.getList().get(0).getClass_name());
+            groupTypeAdapter.setNewData(groupTypeBean.getList());
+        });
     }
 
     @Override
     protected void initDataFromService() {
-
+        activityViewModel.getActivityType();
     }
 }

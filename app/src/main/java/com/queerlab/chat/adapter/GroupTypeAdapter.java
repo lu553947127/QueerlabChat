@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.queerlab.chat.R;
-import com.queerlab.chat.bean.BaseBean;
+import com.queerlab.chat.bean.GroupTypeBean;
 
 import java.util.List;
 
@@ -23,9 +23,9 @@ import java.util.List;
  * @UpdateRemark: 更新说明
  * @Version: 1.0
  */
-public class GroupTypeAdapter extends BaseQuickAdapter<BaseBean, BaseViewHolder> {
+public class GroupTypeAdapter extends BaseQuickAdapter<GroupTypeBean.ListBean, BaseViewHolder> {
     private String is_select;
-    public GroupTypeAdapter(int layoutResId, @Nullable List<BaseBean> data) {
+    public GroupTypeAdapter(int layoutResId, @Nullable List<GroupTypeBean.ListBean> data) {
         super(layoutResId, data);
     }
 
@@ -40,11 +40,11 @@ public class GroupTypeAdapter extends BaseQuickAdapter<BaseBean, BaseViewHolder>
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, BaseBean item) {
-        helper.setText(R.id.tv_tag,item.getTag())
-                .setText(R.id.tv_title, item.getTitle());
+    protected void convert(BaseViewHolder helper, GroupTypeBean.ListBean item) {
+        helper.setText(R.id.tv_tag,item.getEmoName())
+                .setText(R.id.tv_title, item.getClass_name());
 
-        if (!TextUtils.isEmpty(is_select) && is_select.equals(item.getTitle())){
+        if (!TextUtils.isEmpty(is_select) && is_select.equals(item.getClass_name())){
             helper.setBackgroundRes(R.id.ll_bg, R.drawable.shape_yellow_25)
                     .setTextColor(R.id.tv_title, mContext.getResources().getColor(R.color.white));
         }else {

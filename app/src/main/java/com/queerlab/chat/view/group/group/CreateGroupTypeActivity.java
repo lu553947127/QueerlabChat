@@ -16,7 +16,7 @@ import com.queerlab.chat.adapter.CreateGroupTypeAdapter;
 import com.queerlab.chat.base.BaseActivity;
 import com.queerlab.chat.base.EmptyViewFactory;
 import com.queerlab.chat.bean.GroupTypeBean;
-import com.queerlab.chat.viewmodel.GroupViewModel;
+import com.queerlab.chat.viewmodel.NewGroupViewModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,7 +38,7 @@ public class CreateGroupTypeActivity extends BaseActivity {
     View fakeStatusBar;
     @BindView(R.id.rv)
     RecyclerView recyclerView;
-    private GroupViewModel groupViewModel;
+    private NewGroupViewModel newGroupViewModel;
     private String classId;
 
     @Override
@@ -65,15 +65,15 @@ public class CreateGroupTypeActivity extends BaseActivity {
             classId = listBean.getClass_id();
         });
 
-        groupViewModel = getViewModel(GroupViewModel.class);
+        newGroupViewModel = getViewModel(NewGroupViewModel.class);
 
         //获取活动类型列表返回数据
-        groupViewModel.groupTypeLiveData.observe(activity, groupTypeBean -> {
+        newGroupViewModel.groupTypeLiveData.observe(activity, groupTypeBean -> {
             createGroupTypeAdapter.setNewData(groupTypeBean.getList());
             createGroupTypeAdapter.setEmptyView(EmptyViewFactory.createEmptyView(activity, getString(R.string.not_empty_type)));
         });
 
-        groupViewModel.getGroupType("1");
+        newGroupViewModel.getGroupType();
     }
 
     @OnClick({R.id.iv_bar_back, R.id.tv_next})

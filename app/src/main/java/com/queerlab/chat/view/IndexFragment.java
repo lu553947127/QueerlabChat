@@ -16,22 +16,20 @@
  import com.queerlab.chat.base.BaseFragment;
  import com.queerlab.chat.base.EmptyViewFactory;
  import com.queerlab.chat.bean.GroupListBean;
+ import com.queerlab.chat.bean.GroupTypeBean;
  import com.queerlab.chat.event.GroupEvent;
  import com.queerlab.chat.listener.OnCustomCallBack;
- import com.queerlab.chat.push.HUAWEIHmsMessageService;
  import com.queerlab.chat.tencent.TUIKitUtil;
  import com.queerlab.chat.utils.AnimatorUtils;
  import com.queerlab.chat.utils.RefreshUtils;
  import com.queerlab.chat.view.group.search.SearchActivity;
  import com.queerlab.chat.view.login.FirstNameActivity;
- import com.queerlab.chat.view.message.MessagesActivity;
- import com.queerlab.chat.view.message.MessagesExcessiveActivity;
  import com.queerlab.chat.viewmodel.GroupViewModel;
+ import com.queerlab.chat.viewmodel.NewGroupViewModel;
  import com.queerlab.chat.widget.HorizontalItemDecoration;
  import com.scwang.smartrefresh.layout.SmartRefreshLayout;
  import com.scwang.smartrefresh.layout.api.RefreshLayout;
  import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
- import com.tencent.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 
  import org.greenrobot.eventbus.Subscribe;
 
@@ -50,7 +48,7 @@
  * @UpdateRemark: 更新说明
  * @Version: 1.0
  */
-public class IndexFragment extends BaseFragment implements ConversationManagerKit.MessageUnreadWatcher {
+public class IndexFragment extends BaseFragment {
     @BindView(R.id.refresh)
     SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.rv_type)
@@ -62,6 +60,8 @@ public class IndexFragment extends BaseFragment implements ConversationManagerKi
     @BindView(R.id.iv_messages_unread)
     AppCompatImageView ivMessagesUnread;
     private GroupViewModel groupViewModel;
+    private NewGroupViewModel newGroupViewModel;
+    private String classId;
 
     @Override
     protected int initLayout() {
@@ -77,13 +77,14 @@ public class IndexFragment extends BaseFragment implements ConversationManagerKi
     protected void initDataAndEvent(Bundle savedInstanceState, View view1) {
         recyclerViewType.setLayoutManager(new LinearLayoutManager(mActivity ,LinearLayoutManager.HORIZONTAL,false));
         recyclerViewType.addItemDecoration(new HorizontalItemDecoration(10, mActivity));
-        GroupTypeAdapter groupTypeAdapter = new GroupTypeAdapter(R.layout.adapter_group_type, RefreshUtils.getGroupListType());
+        GroupTypeAdapter groupTypeAdapter = new GroupTypeAdapter(R.layout.adapter_group_type, null);
         recyclerViewType.setAdapter(groupTypeAdapter);
 
-        groupTypeAdapter.setIsSelect(groupTypeAdapter.getData().get(0).getTitle());
-
         groupTypeAdapter.setOnItemClickListener((adapter, view, position) -> {
-            groupTypeAdapter.setIsSelect(groupTypeAdapter.getData().get(position).getTitle());
+            GroupTypeBean.ListBean listBean = groupTypeAdapter.getData().get(position);
+            groupTypeAdapter.setIsSelect(listBean.getClass_name());
+            classId = listBean.getClass_id();
+            groupViewModel.groupList(classId);
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -107,6 +108,15 @@ public class IndexFragment extends BaseFragment implements ConversationManagerKi
         });
 
         groupViewModel = mActivity.getViewModel(GroupViewModel.class);
+        newGroupViewModel = mActivity.getViewModel(NewGroupViewModel.class);
+
+        //获取活动类型列表返回数据
+        newGroupViewModel.groupTypeLiveData.observe(mActivity, groupTypeBean -> {
+            classId = groupTypeBean.getList().get(0).getClass_id();
+            groupTypeAdapter.setIsSelect(groupTypeBean.getList().get(0).getClass_name());
+            groupTypeAdapter.setNewData(groupTypeBean.getList());
+            groupViewModel.groupList(classId);
+        });
 
         //获取推荐小组成功返回结果
         groupViewModel.groupListLiveData.observe(mActivity, groupListBean -> {
@@ -124,12 +134,12 @@ public class IndexFragment extends BaseFragment implements ConversationManagerKi
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                groupViewModel.groupList();
+                groupViewModel.groupList(classId);
             }
 
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                groupViewModel.groupListMore();
+                groupViewModel.groupListMore(classId);
             }
         });
 
@@ -145,7 +155,7 @@ public class IndexFragment extends BaseFragment implements ConversationManagerKi
 
     @Override
     protected void initDataFromService() {
-        groupViewModel.groupList();
+        newGroupViewModel.getGroupType();
     }
 
     /**
@@ -155,44 +165,20 @@ public class IndexFragment extends BaseFragment implements ConversationManagerKi
      */
     @Subscribe
     public void onEventCreate(GroupEvent event){
-        groupViewModel.groupList();
+        groupViewModel.groupList(classId);
     }
 
-    @OnClick({R.id.tv_search, R.id.iv_messages, R.id.tv_add})
+    @OnClick({R.id.tv_search, R.id.tv_add})
     void onClick(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.tv_search://搜索
                 ActivityUtils.startActivity(SearchActivity.class);
                 break;
-            case R.id.iv_messages://消息页面
-                ActivityUtils.startActivity(bundle, MessagesActivity.class);
-                break;
             case R.id.tv_add://创建小组
                 bundle.putString("type", "group");
                 ActivityUtils.startActivity(bundle, FirstNameActivity.class);
                 break;
         }
-    }
-
-    /**
-     * 设置底部角标显示状态
-     *
-     * @param count 未读消息数量
-     */
-    @Override
-    public void updateUnread(int count) {
-        if (count < 1) {
-            ivMessagesUnread.setVisibility(View.GONE);
-        }else {
-            ivMessagesUnread.setVisibility(View.VISIBLE);
-        }
-        HUAWEIHmsMessageService.updateBadge(mActivity, count);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        TUIKitUtil.getMessageUnreadTip(this, mActivity);
     }
 }

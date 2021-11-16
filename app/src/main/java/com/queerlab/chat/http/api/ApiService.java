@@ -163,7 +163,7 @@ public interface ApiService {
     @POST("/group/queryAllGroup")
     Flowable<BaseResponse<GroupListBean>> groupList(
             @Field("userId") String userId,
-            @Field("groupStatus") String groupStatus,
+            @Field("classId") String classId,
             @Field("page") int page,
             @Field("rows") int rows
     );

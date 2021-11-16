@@ -6,10 +6,8 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.queerlab.chat.base.PageState;
 import com.queerlab.chat.base.SpConfig;
-import com.queerlab.chat.bean.GroupEmoBean;
 import com.queerlab.chat.bean.GroupListBean;
 import com.queerlab.chat.bean.GroupRoomIdBean;
-import com.queerlab.chat.bean.GroupTypeBean;
 import com.queerlab.chat.bean.LocationUserBean;
 import com.queerlab.chat.http.retrofit.BaseRepository;
 import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
@@ -50,8 +48,6 @@ public class GroupViewModel extends BaseRepository {
     public MutableLiveData voiceRoomJoinLiveData;
     public MutableLiveData voiceRoomLogoutLiveData;
     public MutableLiveData<GroupRoomIdBean> getGroupRoomIdLiveData;
-    public MutableLiveData<GroupTypeBean> groupTypeLiveData;
-    public MutableLiveData<GroupEmoBean> groupEmoLiveData;
     private final String userId;
     private int page = 1;
     private int pageLive = 1;
@@ -75,27 +71,26 @@ public class GroupViewModel extends BaseRepository {
         voiceRoomJoinLiveData = new MutableLiveData();
         voiceRoomLogoutLiveData = new MutableLiveData();
         getGroupRoomIdLiveData = new MutableLiveData();
-        groupTypeLiveData = new MutableLiveData<>();
-        groupEmoLiveData = new MutableLiveData<>();
+
     }
 
     /**
      * 群聊列表
      * 群聊分类 1 live/ null推荐
      */
-    public void groupList(){
+    public void groupList(String classId){
         page = 1;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.groupList(userId, "", page ,10)).setData(groupListLiveData).setPageState(pageStateLiveData).send();
+        request(apiService.groupList(userId, classId, page ,10)).setData(groupListLiveData).setPageState(pageStateLiveData).send();
     }
 
     /**
      * 群聊列表
      */
-    public void groupListMore(){
+    public void groupListMore(String classId){
         page ++;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.groupList(userId, "", page ,10)).setData(groupListLiveData).setPageState(pageStateLiveData).send();
+        request(apiService.groupList(userId, classId, page ,10)).setData(groupListLiveData).setPageState(pageStateLiveData).send();
     }
 
     /**
@@ -279,32 +274,5 @@ public class GroupViewModel extends BaseRepository {
      */
     public void getGroupRoomId(String groupNo){
         request(apiService.getGroupRoomId(groupNo)).setData(getGroupRoomIdLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
-    }
-
-    /**
-     * 获取活动类型列表
-     *
-     * @param type 小组传1 活动传2
-     */
-    public void getGroupType(String type){
-        request(apiService.getGroupType(type, 1, 100)).setData(groupTypeLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
-    }
-
-    /**
-     * 获取活动emo列表
-     */
-    public void getGroupEmo(){
-        page = 1;
-        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.getGroupEmo(page, 104)).setData(groupEmoLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
-    }
-
-    /**
-     * 获取活动emo列表
-     */
-    public void getGroupEmoMore(){
-        page ++;
-        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.getGroupEmo(page, 104)).setData(groupEmoLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 }
