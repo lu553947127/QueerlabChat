@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:background="@drawable/progressbar_red"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="35dp"
+        android:layout_marginRight="15dp"
         android:visibility="gone"
         tools:ignore="RtlHardcoded">
         <TextView

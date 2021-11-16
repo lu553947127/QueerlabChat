@@ -100,7 +100,7 @@ public class CreateGroupsActivity extends BaseActivity {
             finish();
         });
 
-        //获取推荐小组成功返回结果
+        //获取emjio成功返回结果
         newGroupViewModel.groupEmoLiveData.observe(activity, groupEmoBean -> {
             if (groupEmoBean.getPageNum() == 1) {
                 groupTagAdapter.setNewData(groupEmoBean.getList());
@@ -123,7 +123,6 @@ public class CreateGroupsActivity extends BaseActivity {
                 newGroupViewModel.getGroupEmoMore();
             }
         });
-
 
         //滑动监听
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

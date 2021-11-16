@@ -32,6 +32,7 @@ import com.queerlab.chat.push.PrivateConstants;
 import com.queerlab.chat.push.ThirdPushTokenMgr;
 import com.queerlab.chat.tencent.TUIKitUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.imsdk.v2.V2TIMConversationListener;
 import com.tencent.imsdk.v2.V2TIMConversationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
@@ -87,8 +88,6 @@ public class MainActivity extends BaseActivity implements ConversationManagerKit
         prepareThirdPushToken();
         //腾讯云语音聊天室登录初始化
         TUIKitUtil.getTRTCVoiceRoomLogin(activity);
-        // 未读消息监视器
-        ConversationManagerKit.getInstance().addUnreadWatcher(this);
     }
 
     @NonNull
@@ -236,6 +235,8 @@ public class MainActivity extends BaseActivity implements ConversationManagerKit
     @Override
     protected void onResume() {
         super.onResume();
+        // 未读消息监视器
+        ConversationManagerKit.getInstance().addUnreadWatcher(this);
         //获取未读消息显示
         V2TIMManager.getConversationManager().getConversationList(0, 100, new V2TIMValueCallback<V2TIMConversationResult>() {
             @Override

@@ -50,6 +50,7 @@ public class UserViewModel extends BaseRepository {
     public MutableLiveData updateNameLiveData;
     public MutableLiveData updateTypeLiveData;
     public MutableLiveData updateHideGroupLiveData;
+    public MutableLiveData updateHideActivityLiveData;
     public MutableLiveData<LocationUserBean> userSearchLiveData;
     public MutableLiveData updateUserClapLiveData;
     private final String userId;
@@ -66,6 +67,7 @@ public class UserViewModel extends BaseRepository {
         updateNameLiveData = new MutableLiveData();
         updateTypeLiveData = new MutableLiveData();
         updateHideGroupLiveData = new MutableLiveData();
+        updateHideActivityLiveData = new MutableLiveData();
         userSearchLiveData = new MutableLiveData();
         updateUserClapLiveData = new MutableLiveData();
     }
@@ -166,6 +168,15 @@ public class UserViewModel extends BaseRepository {
      */
     public void updateHideGroup(String isHideGroup) {
         request(apiService.updateHideGroup(userId, isHideGroup)).setData(updateHideGroupLiveData).setPageState(pageStateLiveData).send();
+    }
+
+    /**
+     * 隐藏参加的活动
+     *
+     * @param isHideActivity
+     */
+    public void updateHideActivity(String isHideActivity) {
+        request(apiService.updateHideActivity(userId, isHideActivity)).setData(updateHideActivityLiveData).setPageState(pageStateLiveData).send();
     }
 
     /**

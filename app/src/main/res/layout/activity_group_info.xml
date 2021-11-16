@@ -47,6 +47,23 @@
                 android:layout_height="0.8dp"
                 android:background="@color/color_F7F7F7"/>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_see_activity"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="📅查看活动详情"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/color_F7F7F7"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

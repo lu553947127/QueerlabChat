@@ -25,9 +25,10 @@ public class NewGroupViewModel extends BaseRepository {
     public MutableLiveData<GroupTypeBean> groupTypeLiveData;
     public MutableLiveData<GroupEmoBean> groupEmoLiveData;
     private int page = 1;
-    private int pageLive = 1;
 
     public NewGroupViewModel(){
+        pageStateLiveData = new MutableLiveData<>();
+        failStateLiveData = new MutableLiveData<>();
         groupTypeLiveData = new MutableLiveData<>();
         groupEmoLiveData = new MutableLiveData<>();
     }

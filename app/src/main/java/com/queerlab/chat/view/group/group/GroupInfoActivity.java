@@ -16,6 +16,7 @@ import com.queerlab.chat.base.SpConfig;
 import com.queerlab.chat.event.GroupEvent;
 import com.queerlab.chat.listener.OnCustomCallBack;
 import com.queerlab.chat.tencent.TUIKitUtil;
+import com.queerlab.chat.view.activity.ActivityDetailActivity;
 import com.queerlab.chat.view.message.ChatActivity;
 import com.queerlab.chat.viewmodel.GroupViewModel;
 import com.queerlab.chat.widget.SwitchView;
@@ -42,6 +43,8 @@ import butterknife.OnClick;
 public class GroupInfoActivity extends BaseActivity {
     @BindView(R.id.fake_status_bar)
     View fakeStatusBar;
+    @BindView(R.id.tv_see_activity)
+    AppCompatTextView tvSeeActivity;
     @BindView(R.id.sv_notice)
     SwitchView svNotice;
     @BindView(R.id.tv_logout)
@@ -130,7 +133,7 @@ public class GroupInfoActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.iv_bar_back, R.id.tv_see_members, R.id.tv_logout})
+    @OnClick({R.id.iv_bar_back, R.id.tv_see_members, R.id.tv_see_activity, R.id.tv_logout})
     void onClick(View view){
         switch (view.getId()){
             case R.id.iv_bar_back:
@@ -141,6 +144,9 @@ public class GroupInfoActivity extends BaseActivity {
                 bundle.putString("groupId", getIntent().getStringExtra("groupId"));
                 bundle.putString("userId", userId);
                 ActivityUtils.startActivity(bundle, GroupMemberActivity.class);
+                break;
+            case R.id.tv_see_activity://查看活动详情
+                ActivityUtils.startActivity(ActivityDetailActivity.class);
                 break;
             case R.id.tv_logout://解散/退出群组
                 groupLogout();

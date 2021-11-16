@@ -22,9 +22,10 @@ public class ActivityViewModel extends BaseRepository {
     public MutableLiveData<String> failStateLiveData;
     public MutableLiveData<GroupTypeBean> activityTypeLiveData;
     private int page = 1;
-    private int pageLive = 1;
 
     public ActivityViewModel(){
+        pageStateLiveData = new MutableLiveData<>();
+        failStateLiveData = new MutableLiveData<>();
         activityTypeLiveData = new MutableLiveData<>();
     }
 

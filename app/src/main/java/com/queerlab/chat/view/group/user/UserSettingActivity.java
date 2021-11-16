@@ -51,6 +51,8 @@ public class UserSettingActivity extends BaseActivity {
     LinearLayout llOwn;
     @BindView(R.id.sv_group)
     SwitchView svGroup;
+    @BindView(R.id.sv_activity)
+    SwitchView svActivity;
     @BindView(R.id.tv_user_agreement)
     AppCompatTextView tvUserAgreement;
     @BindView(R.id.tv_privacy_agreement)
@@ -98,6 +100,11 @@ public class UserSettingActivity extends BaseActivity {
             EventBus.getDefault().post(new UserEvent("isHideGroup"));
         });
 
+        //隐藏/显示活动成功返回结果
+        userViewModel.updateHideActivityLiveData.observe(activity, s -> {
+            EventBus.getDefault().post(new UserEvent("isHideActivity"));
+        });
+
         //获取当前小组隐藏状态
         switch (userInfoBean.getIs_hide_group()){
             case 1:
@@ -105,6 +112,16 @@ public class UserSettingActivity extends BaseActivity {
                 break;
             case 2:
                 svGroup.setOpened(false);
+                break;
+        }
+
+        //获取当前活动隐藏状态
+        switch (userInfoBean.getIs_hide_activity()){
+            case 1:
+                svActivity.setOpened(true);
+                break;
+            case 2:
+                svActivity.setOpened(false);
                 break;
         }
 
@@ -120,6 +137,21 @@ public class UserSettingActivity extends BaseActivity {
             public void toggleToOff(SwitchView view) {
                 userViewModel.updateHideGroup("2");
                 svGroup.setOpened(false);
+            }
+        });
+
+        //设置活动隐藏状态
+        svActivity.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
+            @Override
+            public void toggleToOn(SwitchView view) {
+                userViewModel.updateHideActivity("1");
+                svActivity.setOpened(true);
+            }
+
+            @Override
+            public void toggleToOff(SwitchView view) {
+                userViewModel.updateHideActivity("2");
+                svActivity.setOpened(false);
             }
         });
     }

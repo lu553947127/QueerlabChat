@@ -31,7 +31,7 @@ public class GroupListAdapter extends BaseQuickAdapter<GroupListBean.ListBean, B
         helper.setText(R.id.tv_tag, item.getGroup_type())
                 .setText(R.id.tv_name, item.getGroup_name())
                 .setText(R.id.tv_num, item.getUserNum() + "个成员")
-                .setVisible(R.id.ll_status, item.getGroup_status() == 1)
-                .setText(R.id.tv_status, item.getGroup_status() == 1 ? "'直播中'" : "发起活动中");
+                .setVisible(R.id.ll_status, item.getGroup_status() != 2)
+                .setText(R.id.tv_status, item.getGroup_status() == 1 ? "直播中" : "发起活动中");
     }
 }

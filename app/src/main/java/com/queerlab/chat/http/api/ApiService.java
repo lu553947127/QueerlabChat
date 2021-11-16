@@ -133,6 +133,14 @@ public interface ApiService {
             @Field("isHideGroup") String isHideGroup
     );
 
+    //隐藏参加的活动
+    @FormUrlEncoded
+    @POST("/user/update")
+    Flowable<BaseResponse> updateHideActivity(
+            @Field("userId") String userId,
+            @Field("isHideActivity") String isHideActivity
+    );
+
     //用户拍一拍
     @FormUrlEncoded
     @POST("/user/updateUserPaiPai")

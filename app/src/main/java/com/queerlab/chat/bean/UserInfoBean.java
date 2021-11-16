@@ -38,6 +38,7 @@ public class UserInfoBean implements Serializable {
     private int paipai;
     private String user_sign;
     private int is_hide_group;
+    private int is_hide_activity;
     private String user_type;
     private String user_portrait;
     private int user_id;
@@ -99,6 +100,14 @@ public class UserInfoBean implements Serializable {
 
     public void setIs_hide_group(int is_hide_group) {
         this.is_hide_group = is_hide_group;
+    }
+
+    public int getIs_hide_activity() {
+        return is_hide_activity;
+    }
+
+    public void setIs_hide_activity(int is_hide_activity) {
+        this.is_hide_activity = is_hide_activity;
     }
 
     public String getUser_type() {
