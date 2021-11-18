@@ -116,7 +116,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -141,6 +140,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/shape_yellow_25"
                             android:padding="10dp"
+                            android:layout_marginRight="15dp"
                             android:textColor="@color/white"
                             android:textSize="17sp"
                             android:text="😊 用户"/>
@@ -149,7 +149,6 @@
                             android:id="@+id/tv_activity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
                             android:background="@drawable/shape_gray_25"
                             android:padding="10dp"
                             android:textColor="@color/color_D2D2D2"

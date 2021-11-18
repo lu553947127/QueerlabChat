@@ -1,5 +1,7 @@
 package com.queerlab.chat.http.api;
 
+import com.queerlab.chat.bean.ActivityListBean;
+import com.queerlab.chat.bean.ActivityStatusBean;
 import com.queerlab.chat.bean.GroupEmoBean;
 import com.queerlab.chat.bean.GroupRoomIdBean;
 import com.queerlab.chat.bean.GroupTypeBean;
@@ -267,7 +269,14 @@ public interface ApiService {
             @Field("groupNo") String groupNo
     );
 
-    //获取活动类型
+    //查询当前群聊是否关联活动
+    @FormUrlEncoded
+    @POST("/activity/app/selectActivityStatus")
+    Flowable<BaseResponse<ActivityStatusBean>> selectActivityStatus(
+            @Field("groupNo") String groupNo
+    );
+
+    //获取小组/活动类型
     @FormUrlEncoded
     @POST("/class/app/queryAllClass")
     Flowable<BaseResponse<GroupTypeBean>> getGroupType(
@@ -276,10 +285,47 @@ public interface ApiService {
             @Field("rows") int rows
     );
 
-    //获取活动emo表情
+    //获取小组emo表情
     @FormUrlEncoded
     @POST("/class/app/queryAllEmo")
     Flowable<BaseResponse<GroupEmoBean>> getGroupEmo(
+            @Field("page") int page,
+            @Field("rows") int rows
+    );
+
+    //根据经纬度活动列表
+    @FormUrlEncoded
+    @POST("/activity/app/selectActivity")
+    Flowable<BaseResponse<ActivityListBean>> locationActivity(
+            @Field("lng") String lng,
+            @Field("lat") String lat,
+            @Field("page") int page,
+            @Field("rows") int rows
+    );
+
+    //活动列表根据关键字搜索
+    @FormUrlEncoded
+    @POST("/activity/app/selectActivity")
+    Flowable<BaseResponse<ActivityListBean>> SearchActivity(
+            @Field("title") String title,
+            @Field("page") int page,
+            @Field("rows") int rows
+    );
+
+    //用户参加的活动
+    @FormUrlEncoded
+    @POST("/activity/app/selectActivity")
+    Flowable<BaseResponse<ActivityListBean>> userJoinActivity(
+            @Field("userId") String userId,
+            @Field("page") int page,
+            @Field("rows") int rows
+    );
+
+    //活动列表
+    @FormUrlEncoded
+    @POST("/activity/app/selectActivity")
+    Flowable<BaseResponse<ActivityListBean>> activityList(
+            @Field("classId") String classId,
             @Field("page") int page,
             @Field("rows") int rows
     );

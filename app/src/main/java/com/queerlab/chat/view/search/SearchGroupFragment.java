@@ -1,4 +1,4 @@
-package com.queerlab.chat.view.group.search;
+package com.queerlab.chat.view.search;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,33 +9,29 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.queerlab.chat.R;
-import com.queerlab.chat.adapter.SearchUserAdapter;
+import com.queerlab.chat.adapter.SearchGroupAdapter;
 import com.queerlab.chat.base.BaseLazyFragment;
 import com.queerlab.chat.base.EmptyViewFactory;
-import com.queerlab.chat.bean.LocationUserBean;
-import com.queerlab.chat.dialog.AnimationDialog;
-import com.queerlab.chat.event.ClapEvent;
+import com.queerlab.chat.bean.GroupListBean;
+import com.queerlab.chat.listener.OnCustomCallBack;
+import com.queerlab.chat.tencent.TUIKitUtil;
 import com.queerlab.chat.utils.RefreshUtils;
-import com.queerlab.chat.view.group.user.UserInfoActivity;
-import com.queerlab.chat.viewmodel.UserViewModel;
+import com.queerlab.chat.viewmodel.GroupViewModel;
 import com.queerlab.chat.widget.CustomEditText;
 import com.queerlab.chat.widget.DividerItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import butterknife.BindView;
 
 /**
  * @ProjectName: QueerlabChat
- * @Package: com.queerlab.chat.view.group.search
- * @ClassName: SearchUserFragment
- * @Description: 搜索用户fragment
+ * @Package: com.queerlab.chat.view.search
+ * @ClassName: SearchGroupFragment
+ * @Description: 搜索小组fragment
  * @Author: 鹿鸿祥
  * @CreateDate: 5/19/21 1:20 PM
  * @UpdateUser: 更新者
@@ -43,18 +39,18 @@ import butterknife.BindView;
  * @UpdateRemark: 更新说明
  * @Version: 1.0
  */
-public class SearchUserFragment extends BaseLazyFragment {
+public class SearchGroupFragment extends BaseLazyFragment {
     @BindView(R.id.refresh)
     SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.rv)
     RecyclerView recyclerView;
     private CustomEditText etSearch;
     private TextWatcher textWatcher;
-    private UserViewModel userViewModel;
+    private GroupViewModel groupViewModel;
 
     @Override
     protected int initLayout() {
-        return R.layout.fragment_search_user;
+        return R.layout.fragment_search_group;
     }
 
     @Override
@@ -63,46 +59,50 @@ public class SearchUserFragment extends BaseLazyFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST, R.drawable.divider_15));
-        SearchUserAdapter searchUserAdapter = new SearchUserAdapter(R.layout.adapter_search_user, null);
-        recyclerView.setAdapter(searchUserAdapter);
+        SearchGroupAdapter searchGroupAdapter = new SearchGroupAdapter(R.layout.adapter_search_group, null);
+        recyclerView.setAdapter(searchGroupAdapter);
 
-        searchUserAdapter.setOnItemClickListener((adapter, view, position) -> {
-            LocationUserBean.ListBean listBean = searchUserAdapter.getData().get(position);
-            Bundle bundle = new Bundle();
-            bundle.putString("userId", String.valueOf(listBean.getUser_id()));
-            ActivityUtils.startActivity(bundle, UserInfoActivity.class);
+        searchGroupAdapter.setOnItemClickListener((adapter, view, position) -> {
+            GroupListBean.ListBean listBean = searchGroupAdapter.getData().get(position);
+
+            TUIKitUtil.enterGroup(mActivity, listBean, new OnCustomCallBack() {
+                @Override
+                public void onSuccess(Object data) {
+                    groupViewModel.groupJoin(listBean.getGroup_no());
+                    TUIKitUtil.startChatActivity(mActivity, true, listBean.getGroup_no(), listBean.getGroup_type() + listBean.getGroup_name(), listBean.getRoomId());
+                }
+
+                @Override
+                public void onError(String module, int errCode, String errMsg) {
+
+                }
+            });
         });
 
-        userViewModel = mActivity.getViewModel(UserViewModel.class);
+        groupViewModel = mActivity.getViewModel(GroupViewModel.class);
 
         //搜索用户成功返回结果
-        userViewModel.userSearchLiveData.observe(mActivity, locationUserBean -> {
-            searchUserAdapter.setKeyword(etSearch.getTrimmedString());
-            if (locationUserBean.getPageNum() == 1) {
-                searchUserAdapter.setNewData(locationUserBean.getList());
-                searchUserAdapter.setEmptyView(EmptyViewFactory.createEmptyView(mActivity, getString(R.string.not_search)));
+        groupViewModel.groupSearchListLiveData.observe(mActivity, groupListBean -> {
+            searchGroupAdapter.setKeyword(etSearch.getTrimmedString());
+            if (groupListBean.getPageNum() == 1) {
+                searchGroupAdapter.setNewData(groupListBean.getList());
+                searchGroupAdapter.setEmptyView(EmptyViewFactory.createEmptyView(mActivity, getString(R.string.not_search)));
             } else {
-                searchUserAdapter.addData(searchUserAdapter.getData().size(), locationUserBean.getList());
+                searchGroupAdapter.addData(searchGroupAdapter.getData().size(), groupListBean.getList());
             }
-            RefreshUtils.setNoMore(smartRefreshLayout,locationUserBean.getPageNum(), locationUserBean.getTotal());
-        });
-
-        //用户拍一拍成功返回
-        userViewModel.updateUserClapLiveData.observe(mActivity, s -> {
-            AnimationDialog animationDialog = new AnimationDialog(mActivity);
-            animationDialog.showDialog();
+            RefreshUtils.setNoMore(smartRefreshLayout,groupListBean.getPageNum(), groupListBean.getTotal());
         });
 
         //刷新和加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                userViewModel.userSearch(etSearch.getTrimmedString());
+                groupViewModel.groupSearchList(etSearch.getTrimmedString());
             }
 
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                userViewModel.userSearchMore(etSearch.getTrimmedString());
+                groupViewModel.groupSearchListMore(etSearch.getTrimmedString());
             }
         });
 
@@ -119,7 +119,7 @@ public class SearchUserFragment extends BaseLazyFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                userViewModel.userSearch(etSearch.getTrimmedString());
+                groupViewModel.groupSearchList(etSearch.getTrimmedString());
             }
         });
 
@@ -128,7 +128,7 @@ public class SearchUserFragment extends BaseLazyFragment {
                 // 先隐藏键盘
                 KeyboardUtils.hideSoftInput(mActivity);
                 // 搜索，进行自己要的操作...
-                userViewModel.userSearch(etSearch.getTrimmedString());
+                groupViewModel.groupSearchList(etSearch.getTrimmedString());
                 return true;
             }
             return false;
@@ -137,28 +137,17 @@ public class SearchUserFragment extends BaseLazyFragment {
 
     @Override
     public boolean isUseEventBus() {
-        return true;
+        return false;
     }
 
     @Override
     protected void initDataFromService() {
-        userViewModel.userSearch(etSearch.getTrimmedString());
+        groupViewModel.groupSearchList(etSearch.getTrimmedString());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         etSearch.removeTextChangedListener(textWatcher);
-    }
-
-    /**
-     * 双击头像拍一拍
-     * @param event
-     */
-    @Subscribe
-    public void onEventUpdateClap(ClapEvent event){
-        if (event.getStatus().equals("search")){
-            userViewModel.updateUserClap(event.getUserId());
-        }
     }
 }

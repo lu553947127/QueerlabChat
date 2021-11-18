@@ -97,6 +97,31 @@ public class RefreshUtils {
         return list;
     }
 
+    /**
+     * 地图马克点显示
+     *
+     * @param className
+     * @return
+     */
+    public static int getMarkerDrawable(String className){
+        int markerDrawable = R.drawable.icon_marker_moren;
+        switch (className){
+            case "默认":
+                markerDrawable = R.drawable.icon_marker_moren;
+                break;
+            case "展览":
+                markerDrawable = R.drawable.icon_marker_zhanlan;
+                break;
+            case "运动":
+                markerDrawable = R.drawable.icon_marker_yundong;
+                break;
+            case "酒吧":
+                markerDrawable = R.drawable.icon_marker_jiuba;
+                break;
+        }
+        return  markerDrawable;
+    }
+
     //小组类型列表
     public static List<BaseBean> getGroupListType(){
         List<BaseBean> list =new ArrayList<>();

@@ -112,7 +112,7 @@
         <activity android:name=".view.group.group.SelectMemberActivity" />
 
         <!-- 搜索页面 -->
-        <activity android:name=".view.group.search.SearchActivity" />
+        <activity android:name=".view.search.SearchActivity" />
 
         <!-- 首页 -->
         <activity android:name=".view.MainActivity" android:windowSoftInputMode = "stateAlwaysHidden|adjustPan"/>

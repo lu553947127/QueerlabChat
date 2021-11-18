@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lxj.xpopup.XPopup;
@@ -43,6 +44,8 @@ import butterknife.OnClick;
 public class GroupInfoActivity extends BaseActivity {
     @BindView(R.id.fake_status_bar)
     View fakeStatusBar;
+    @BindView(R.id.view_activity)
+    View viewActivity;
     @BindView(R.id.tv_see_activity)
     AppCompatTextView tvSeeActivity;
     @BindView(R.id.sv_notice)
@@ -50,6 +53,7 @@ public class GroupInfoActivity extends BaseActivity {
     @BindView(R.id.tv_logout)
     AppCompatTextView tvLogout;
     private String userId;
+    private String activityId;
     private GroupViewModel groupViewModel;
 
     @Override
@@ -66,6 +70,8 @@ public class GroupInfoActivity extends BaseActivity {
     protected void initDataAndEvent(Bundle savedInstanceState) {
         BarUtils.setStatusBarColor(fakeStatusBar, getResources().getColor(R.color.white));
         isDisturbStatus();
+
+        LogUtils.e("groupId=====" + getIntent().getStringExtra("groupId"));
 
         userId = getIntent().getStringExtra("userId");
 
@@ -113,6 +119,18 @@ public class GroupInfoActivity extends BaseActivity {
             });
         });
 
+        //查询当前群聊是否关联活动
+        groupViewModel.activityStatusLiveData.observe(activity, activityStatusBean -> {
+            activityId = activityStatusBean.getActivity_id();
+            if (activityStatusBean.getActivity_status() == 0){
+                tvSeeActivity.setVisibility(View.GONE);
+                viewActivity.setVisibility(View.GONE);
+            }else {
+                tvSeeActivity.setVisibility(View.VISIBLE);
+                viewActivity.setVisibility(View.VISIBLE);
+            }
+        });
+
         //加载动画返回结果
         groupViewModel.pageStateLiveData.observe(activity, s -> {
             showPageState(s);
@@ -131,22 +149,25 @@ public class GroupInfoActivity extends BaseActivity {
                 TUIKitUtil.setDisturbStatus(getIntent().getStringExtra("groupId"), 1);
             }
         });
+
+        groupViewModel.selectActivityStatus(getIntent().getStringExtra("groupId"));
     }
 
     @OnClick({R.id.iv_bar_back, R.id.tv_see_members, R.id.tv_see_activity, R.id.tv_logout})
     void onClick(View view){
+        Bundle bundle = new Bundle();
         switch (view.getId()){
             case R.id.iv_bar_back:
                 finish();
                 break;
             case R.id.tv_see_members://查看组员
-                Bundle bundle = new Bundle();
                 bundle.putString("groupId", getIntent().getStringExtra("groupId"));
                 bundle.putString("userId", userId);
                 ActivityUtils.startActivity(bundle, GroupMemberActivity.class);
                 break;
             case R.id.tv_see_activity://查看活动详情
-                ActivityUtils.startActivity(ActivityDetailActivity.class);
+                bundle.putString("activityId", activityId);
+                ActivityUtils.startActivity(bundle, ActivityDetailActivity.class);
                 break;
             case R.id.tv_logout://解散/退出群组
                 groupLogout();

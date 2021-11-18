@@ -40,6 +40,7 @@
         <entry key="app/src/main/res/layout/adapter_group_type.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/adapter_interest.xml" value="0.20606884057971014" />
         <entry key="app/src/main/res/layout/adapter_map_nearby.xml" value="0.1831306990881459" />
+        <entry key="app/src/main/res/layout/adapter_search_activity.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/adapter_search_user.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/chat_input_layout.xml" value="0.2259963768115942" />
         <entry key="app/src/main/res/layout/dialog_custom_marker.xml" value="0.1831306990881459" />
@@ -49,6 +50,8 @@
         <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/fragment_mine.xml" value="0.175" />
         <entry key="app/src/main/res/layout/fragment_recommend.xml" value="0.1831306990881459" />
+        <entry key="app/src/main/res/layout/fragment_search_activity.xml" value="0.1831306990881459" />
+        <entry key="app/src/main/res/layout/fragment_search_user.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/layout_apply_count.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/layout_empty.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/layout_empty_call.xml" value="0.1831306990881459" />

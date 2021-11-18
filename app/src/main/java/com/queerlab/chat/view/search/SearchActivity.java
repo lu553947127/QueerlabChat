@@ -1,4 +1,4 @@
-package com.queerlab.chat.view.group.search;
+package com.queerlab.chat.view.search;
 
 import android.os.Bundle;
 import android.view.View;
@@ -54,7 +54,8 @@ public class SearchActivity extends BaseActivity {
         BarUtils.setStatusBarColor(fakeStatusBar, getResources().getColor(R.color.white));
         Fragment[] fragments = {
                 new SearchGroupFragment(),
-                new SearchUserFragment()
+                new SearchUserFragment(),
+                new SearchActivityFragment()
         };
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments, getResources().getStringArray(R.array.search_list)));
         dynamicPagerIndicator.setViewPager(viewPager);

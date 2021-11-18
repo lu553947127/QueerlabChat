@@ -74,8 +74,6 @@ public class UserInfoActivity extends BaseActivity {
     LinearLayout llInterest;
     @BindView(R.id.rv_interest)
     RecyclerView recyclerViewInterest;
-    @BindView(R.id.ll_group)
-    LinearLayout llGroup;
     @BindView(R.id.tv_user)
     AppCompatTextView tvUser;
     @BindView(R.id.tv_activity)
@@ -149,9 +147,19 @@ public class UserInfoActivity extends BaseActivity {
             }
 
             if (userInfoBean.getIs_hide_group() == 2){
-                llGroup.setVisibility(View.VISIBLE);
+                tvUser.setVisibility(View.VISIBLE);
+                recyclerViewGroup.setVisibility(View.VISIBLE);
             }else {
-                llGroup.setVisibility(View.GONE);
+                tvUser.setVisibility(View.GONE);
+                recyclerViewGroup.setVisibility(View.GONE);
+            }
+
+            if (userInfoBean.getIs_hide_activity() == 2){
+                tvActivity.setVisibility(View.VISIBLE);
+                recyclerViewActivity.setVisibility(View.VISIBLE);
+            }else {
+                tvActivity.setVisibility(View.GONE);
+                recyclerViewActivity.setVisibility(View.GONE);
             }
         });
 

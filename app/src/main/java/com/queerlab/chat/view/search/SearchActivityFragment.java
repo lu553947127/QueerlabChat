@@ -1,4 +1,4 @@
-package com.queerlab.chat.view.group.search;
+package com.queerlab.chat.view.search;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,16 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.queerlab.chat.R;
-import com.queerlab.chat.adapter.SearchGroupAdapter;
+import com.queerlab.chat.adapter.SearchActivityAdapter;
 import com.queerlab.chat.base.BaseLazyFragment;
 import com.queerlab.chat.base.EmptyViewFactory;
-import com.queerlab.chat.bean.GroupListBean;
-import com.queerlab.chat.listener.OnCustomCallBack;
-import com.queerlab.chat.tencent.TUIKitUtil;
+import com.queerlab.chat.bean.ActivityListBean;
 import com.queerlab.chat.utils.RefreshUtils;
-import com.queerlab.chat.viewmodel.GroupViewModel;
+import com.queerlab.chat.view.activity.ActivityDetailActivity;
+import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.widget.CustomEditText;
 import com.queerlab.chat.widget.DividerItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -29,28 +29,38 @@ import butterknife.BindView;
 
 /**
  * @ProjectName: QueerlabChat
- * @Package: com.queerlab.chat.view.group.search
- * @ClassName: SearchGroupFragment
- * @Description: 搜索小组fragment
+ * @Package: com.queerlab.chat.view.search
+ * @ClassName: SearchActivityFragment
+ * @Description: 搜索活动fragment
  * @Author: 鹿鸿祥
- * @CreateDate: 5/19/21 1:20 PM
+ * @CreateDate: 2021/11/18 09:14
  * @UpdateUser: 更新者
- * @UpdateDate: 5/19/21 1:20 PM
+ * @UpdateDate: 2021/11/18 09:14
  * @UpdateRemark: 更新说明
  * @Version: 1.0
  */
-public class SearchGroupFragment extends BaseLazyFragment {
+public class SearchActivityFragment extends BaseLazyFragment {
     @BindView(R.id.refresh)
     SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.rv)
     RecyclerView recyclerView;
     private CustomEditText etSearch;
     private TextWatcher textWatcher;
-    private GroupViewModel groupViewModel;
+    private ActivityViewModel activityViewModel;
 
     @Override
     protected int initLayout() {
-        return R.layout.fragment_search_group;
+        return R.layout.fragment_search_activity;
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return false;
+    }
+
+    @Override
+    protected void initDataFromService() {
+        activityViewModel.searchActivity(etSearch.getTrimmedString());
     }
 
     @Override
@@ -59,50 +69,40 @@ public class SearchGroupFragment extends BaseLazyFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST, R.drawable.divider_15));
-        SearchGroupAdapter searchGroupAdapter = new SearchGroupAdapter(R.layout.adapter_search_group, null);
-        recyclerView.setAdapter(searchGroupAdapter);
+        SearchActivityAdapter searchActivityAdapter = new SearchActivityAdapter(R.layout.adapter_search_activity, null);
+        recyclerView.setAdapter(searchActivityAdapter);
 
-        searchGroupAdapter.setOnItemClickListener((adapter, view, position) -> {
-            GroupListBean.ListBean listBean = searchGroupAdapter.getData().get(position);
-
-            TUIKitUtil.enterGroup(mActivity, listBean, new OnCustomCallBack() {
-                @Override
-                public void onSuccess(Object data) {
-                    groupViewModel.groupJoin(listBean.getGroup_no());
-                    TUIKitUtil.startChatActivity(mActivity, true, listBean.getGroup_no(), listBean.getGroup_type() + listBean.getGroup_name(), listBean.getRoomId());
-                }
-
-                @Override
-                public void onError(String module, int errCode, String errMsg) {
-
-                }
-            });
+        searchActivityAdapter.setOnItemClickListener((adapter, view, position) -> {
+            ActivityListBean.ListBean listBean = searchActivityAdapter.getData().get(position);
+            Bundle bundle = new Bundle();
+            bundle.putString("activityId", String.valueOf(listBean.getId()));
+            ActivityUtils.startActivity(bundle, ActivityDetailActivity.class);
         });
 
-        groupViewModel = mActivity.getViewModel(GroupViewModel.class);
+        activityViewModel = mActivity.getViewModel(ActivityViewModel.class);
 
         //搜索用户成功返回结果
-        groupViewModel.groupSearchListLiveData.observe(mActivity, groupListBean -> {
-            searchGroupAdapter.setKeyword(etSearch.getTrimmedString());
-            if (groupListBean.getPageNum() == 1) {
-                searchGroupAdapter.setNewData(groupListBean.getList());
-                searchGroupAdapter.setEmptyView(EmptyViewFactory.createEmptyView(mActivity, getString(R.string.not_search)));
+        activityViewModel.searchActivityLiveData.observe(mActivity, activityListBean -> {
+            searchActivityAdapter.setKeyword(etSearch.getTrimmedString());
+            if (activityListBean.getPageNum() == 1) {
+                searchActivityAdapter.setNewData(activityListBean.getList());
+                searchActivityAdapter.setEmptyView(EmptyViewFactory.createEmptyView(mActivity, getString(R.string.not_search)));
             } else {
-                searchGroupAdapter.addData(searchGroupAdapter.getData().size(), groupListBean.getList());
+                searchActivityAdapter.addData(searchActivityAdapter.getData().size(), activityListBean.getList());
             }
-            RefreshUtils.setNoMore(smartRefreshLayout,groupListBean.getPageNum(), groupListBean.getTotal());
+            RefreshUtils.setNoMore(smartRefreshLayout,activityListBean.getPageNum(), activityListBean.getTotal());
         });
 
         //刷新和加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                groupViewModel.groupSearchList(etSearch.getTrimmedString());
+                activityViewModel.searchActivity(etSearch.getTrimmedString());
             }
 
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                groupViewModel.groupSearchListMore(etSearch.getTrimmedString());
+                activityViewModel.searchActivityMore(etSearch.getTrimmedString());
             }
         });
 
@@ -119,7 +119,7 @@ public class SearchGroupFragment extends BaseLazyFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                groupViewModel.groupSearchList(etSearch.getTrimmedString());
+                activityViewModel.searchActivity(etSearch.getTrimmedString());
             }
         });
 
@@ -128,21 +128,11 @@ public class SearchGroupFragment extends BaseLazyFragment {
                 // 先隐藏键盘
                 KeyboardUtils.hideSoftInput(mActivity);
                 // 搜索，进行自己要的操作...
-                groupViewModel.groupSearchList(etSearch.getTrimmedString());
+                activityViewModel.searchActivity(etSearch.getTrimmedString());
                 return true;
             }
             return false;
         });
-    }
-
-    @Override
-    public boolean isUseEventBus() {
-        return false;
-    }
-
-    @Override
-    protected void initDataFromService() {
-        groupViewModel.groupSearchList(etSearch.getTrimmedString());
     }
 
     @Override

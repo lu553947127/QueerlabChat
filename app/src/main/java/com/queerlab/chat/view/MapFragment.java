@@ -20,6 +20,7 @@ import com.queerlab.chat.adapter.MapNearbyAdapter;
 import com.queerlab.chat.app.MyApplication;
 import com.queerlab.chat.base.BaseFragment;
 import com.queerlab.chat.base.EmptyViewFactory;
+import com.queerlab.chat.bean.ActivityListBean;
 import com.queerlab.chat.bean.BaseBean;
 import com.queerlab.chat.bean.LocationUserBean;
 import com.queerlab.chat.dialog.AnimationDialog;
@@ -34,6 +35,7 @@ import com.queerlab.chat.utils.RefreshUtils;
 import com.queerlab.chat.view.activity.ActivityDetailActivity;
 import com.queerlab.chat.view.group.user.UserInfoActivity;
 import com.queerlab.chat.view.map.MapNearbyActivity;
+import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.viewmodel.MapViewModel;
 import com.queerlab.chat.viewmodel.UserViewModel;
 import com.queerlab.chat.widget.popup.CommonPopupWindow;
@@ -55,6 +57,7 @@ import com.tencent.tencentmap.mapsdk.maps.model.TileOverlay;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -94,6 +97,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
     private TileOverlay tileOverlay;
     private MapViewModel mapViewModel;
     private UserViewModel userViewModel;
+    private ActivityViewModel activityViewModel;
     private MapNearbyAdapter mapNearbyAdapter;
     private LocationEvent locationEvent;
     private CommonPopupWindow commonPopupWindow;
@@ -113,6 +117,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         initMap();
         mapViewModel = mActivity.getViewModel(MapViewModel.class);
         userViewModel = mActivity.getViewModel(UserViewModel.class);
+        activityViewModel = mActivity.getViewModel(ActivityViewModel.class);
 
         locationEvent = new LocationEvent(0, 0);
 
@@ -169,6 +174,11 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
             animationDialog.showDialog();
         });
 
+        //获取经纬度马克点
+        activityViewModel.locationActivityLiveData.observe(mActivity, activityListBean -> {
+            setMarker(activityListBean.getList());
+        });
+
         //刷新和加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -199,7 +209,6 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
 //        tileOverlay = TUIKitUtil.getLocalHeatMapList(mActivity,this, tencentMap, tileOverlay);
         initMap();
         mapViewModel.heatMapList();
-        setMarker();
     }
 
     //地图初始化
@@ -233,9 +242,17 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
 
             @Override
             public void onCameraChangeFinished(CameraPosition cameraPosition) {
-//                ToastUtils.showShort( cameraPosition.target.latitude + "----" + cameraPosition.target.latitude);
                 clearPopupWindow();
+                activityViewModel.locationActivity(String.valueOf(cameraPosition.target.longitude),
+                        String.valueOf(cameraPosition.target.latitude), 100);
             }
+        });
+
+        ///马克点点击监听
+        tencentMap.setOnMarkerClickListener(marker -> {
+//            ToastUtils.showShort("马克被电击" + marker.getId() + marker.getTitle() + marker.getTag());
+            showPopWindow();
+            return false;
         });
     }
 
@@ -272,27 +289,20 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
 
     ///设置马克点
     public Marker mCustomMarker;
-    private void setMarker() {
+    private void setMarker(List<ActivityListBean.ListBean> activityList) {
         ArrayList<MarkerOptions> markers = new ArrayList<>();
-        for (BaseBean baseBean : RefreshUtils.getMarkerList()) {
-            BitmapDescriptor custom = BitmapDescriptorFactory.fromResource(baseBean.getMarkerDrawable());
-            MarkerOptions markerOptions = new MarkerOptions(new LatLng(baseBean.getLatitude(),baseBean.getLongitude()))
+        for (ActivityListBean.ListBean activityListBean : activityList) {
+            BitmapDescriptor custom = BitmapDescriptorFactory.fromResource(RefreshUtils.getMarkerDrawable(activityListBean.getIconName()));
+            MarkerOptions markerOptions = new MarkerOptions(new LatLng(activityListBean.getLat(), activityListBean.getLng()))
                     .icon(custom)//添加马克点自定义icon
-                    .title(baseBean.getTitle())//马克点点击显示title
-                    .tag(baseBean.getTag())//马克点主键
+                    .title(activityListBean.getTitle())//马克点点击显示title
+                    .tag(activityListBean.getId())//马克点主键
                     .flat(true);//马克点是否支持3d
             markers.add(markerOptions);
             mCustomMarker = tencentMap.addMarker(markerOptions);
+            mCustomMarker.setClickable(true);
+            mCustomMarker.hideInfoWindow();
         }
-        mCustomMarker.setClickable(true);
-        mCustomMarker.hideInfoWindow();
-
-        ///马克点点击监听
-        tencentMap.setOnMarkerClickListener(marker -> {
-//            ToastUtils.showShort("马克被电击" + marker.getId() + marker.getTitle() + marker.getTag());
-            showPopWindow();
-            return false;
-        });
     }
 
     /**
@@ -406,6 +416,8 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
                 mapViewModel.updateLocation(String.valueOf(locationEvent.getLongitude()), String.valueOf(locationEvent.getLatitude()));
                 MyApplication.getMainThreadHandler().postDelayed(() -> {
                     mapViewModel.locationUser(String.valueOf(locationEvent.getLongitude()), String.valueOf(locationEvent.getLatitude()));
+                    activityViewModel.locationActivity(String.valueOf(locationEvent.getLongitude()),
+                            String.valueOf(locationEvent.getLatitude()), 100);
                 }, 1000);
                 break;
             case "refuse":

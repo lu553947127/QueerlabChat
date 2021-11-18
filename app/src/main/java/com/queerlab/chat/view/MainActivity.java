@@ -32,7 +32,6 @@ import com.queerlab.chat.push.PrivateConstants;
 import com.queerlab.chat.push.ThirdPushTokenMgr;
 import com.queerlab.chat.tencent.TUIKitUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.imsdk.v2.V2TIMConversationListener;
 import com.tencent.imsdk.v2.V2TIMConversationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;

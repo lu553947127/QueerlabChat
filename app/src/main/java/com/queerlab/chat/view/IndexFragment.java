@@ -4,7 +4,6 @@
  import android.view.View;
 
  import androidx.annotation.NonNull;
- import androidx.appcompat.widget.AppCompatImageView;
  import androidx.appcompat.widget.AppCompatTextView;
  import androidx.recyclerview.widget.LinearLayoutManager;
  import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +21,7 @@
  import com.queerlab.chat.tencent.TUIKitUtil;
  import com.queerlab.chat.utils.AnimatorUtils;
  import com.queerlab.chat.utils.RefreshUtils;
- import com.queerlab.chat.view.group.search.SearchActivity;
+ import com.queerlab.chat.view.search.SearchActivity;
  import com.queerlab.chat.view.login.FirstNameActivity;
  import com.queerlab.chat.viewmodel.GroupViewModel;
  import com.queerlab.chat.viewmodel.NewGroupViewModel;
@@ -57,8 +56,6 @@ public class IndexFragment extends BaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.tv_add)
     AppCompatTextView tvAdd;
-    @BindView(R.id.iv_messages_unread)
-    AppCompatImageView ivMessagesUnread;
     private GroupViewModel groupViewModel;
     private NewGroupViewModel newGroupViewModel;
     private String classId;

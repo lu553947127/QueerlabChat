@@ -1,6 +1,11 @@
 package com.queerlab.chat.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
+
+import com.blankj.utilcode.util.SPUtils;
+import com.queerlab.chat.base.PageState;
+import com.queerlab.chat.base.SpConfig;
+import com.queerlab.chat.bean.ActivityListBean;
 import com.queerlab.chat.bean.GroupTypeBean;
 import com.queerlab.chat.http.retrofit.BaseRepository;
 
@@ -21,12 +26,22 @@ public class ActivityViewModel extends BaseRepository {
     public MutableLiveData<String> pageStateLiveData;
     public MutableLiveData<String> failStateLiveData;
     public MutableLiveData<GroupTypeBean> activityTypeLiveData;
+    public MutableLiveData<ActivityListBean> locationActivityLiveData;
+    public MutableLiveData<ActivityListBean> searchActivityLiveData;
+    public MutableLiveData<ActivityListBean> userJoinActivityLiveData;
+    public MutableLiveData<ActivityListBean> activityListLiveData;
+    private final String userId;
     private int page = 1;
 
     public ActivityViewModel(){
+        userId = SPUtils.getInstance().getString(SpConfig.USER_ID);
         pageStateLiveData = new MutableLiveData<>();
         failStateLiveData = new MutableLiveData<>();
         activityTypeLiveData = new MutableLiveData<>();
+        locationActivityLiveData = new MutableLiveData<>();
+        searchActivityLiveData = new MutableLiveData<>();
+        userJoinActivityLiveData = new MutableLiveData<>();
+        activityListLiveData = new MutableLiveData<>();
     }
 
     /**
@@ -34,6 +49,96 @@ public class ActivityViewModel extends BaseRepository {
      *
      */
     public void getActivityType(){
-        request(apiService.getGroupType("2", 1, 100)).setData(activityTypeLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.getGroupType("2", page, 100)).setData(activityTypeLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 根据经纬度活动列表
+     *
+     * @param longitude
+     * @param latitude
+     * @param rows
+     */
+    public void locationActivity(String longitude, String latitude, int rows){
+        page = 1;
+        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
+        request(apiService.locationActivity(longitude, latitude, page, rows)).setData(locationActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 根据经纬度活动列表
+     *
+     * @param longitude
+     * @param latitude
+     * @param rows
+     */
+    public void locationActivityMore(String longitude, String latitude, int rows){
+        page ++;
+        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
+        request(apiService.locationActivity(longitude, latitude, page, rows)).setData(locationActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 活动列表根据关键字搜索
+     *
+     * @param title
+     */
+    public void searchActivity(String title){
+        page = 1;
+        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
+        request(apiService.SearchActivity(title, page, 10)).setData(searchActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 活动列表根据关键字搜索
+     *
+     * @param title
+     */
+    public void searchActivityMore(String title){
+        page ++;
+        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
+        request(apiService.SearchActivity(title, page, 10)).setData(searchActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 用户参加的活动
+     *
+     */
+    public void userJoinActivity(){
+        page = 1;
+        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
+        request(apiService.userJoinActivity(userId, page, 10)).setData(userJoinActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 用户参加的活动
+     *
+     */
+    public void userJoinActivityMore(){
+        page ++;
+        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
+        request(apiService.userJoinActivity(userId, page, 10)).setData(userJoinActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 活动列表
+     *
+     * @param classId
+     */
+    public void activityList(String classId){
+        page = 1;
+        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
+        request(apiService.activityList(classId, page, 10)).setData(activityListLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 活动列表
+     *
+     * @param classId
+     */
+    public void activityListMore(String classId){
+        page ++;
+        pageStateLiveData.postValue(PageState.PAGE_REFRESH);
+        request(apiService.activityList(classId, page, 10)).setData(activityListLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 }

@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.queerlab.chat.base.PageState;
 import com.queerlab.chat.base.SpConfig;
+import com.queerlab.chat.bean.ActivityStatusBean;
 import com.queerlab.chat.bean.GroupListBean;
 import com.queerlab.chat.bean.GroupRoomIdBean;
 import com.queerlab.chat.bean.LocationUserBean;
@@ -48,6 +49,7 @@ public class GroupViewModel extends BaseRepository {
     public MutableLiveData voiceRoomJoinLiveData;
     public MutableLiveData voiceRoomLogoutLiveData;
     public MutableLiveData<GroupRoomIdBean> getGroupRoomIdLiveData;
+    public MutableLiveData<ActivityStatusBean> activityStatusLiveData;
     private final String userId;
     private int page = 1;
     private int pageLive = 1;
@@ -71,7 +73,7 @@ public class GroupViewModel extends BaseRepository {
         voiceRoomJoinLiveData = new MutableLiveData();
         voiceRoomLogoutLiveData = new MutableLiveData();
         getGroupRoomIdLiveData = new MutableLiveData();
-
+        activityStatusLiveData = new MutableLiveData<>();
     }
 
     /**
@@ -274,5 +276,14 @@ public class GroupViewModel extends BaseRepository {
      */
     public void getGroupRoomId(String groupNo){
         request(apiService.getGroupRoomId(groupNo)).setData(getGroupRoomIdLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 查询当前群聊是否关联活动
+     *
+     * @param groupNo
+     */
+    public void selectActivityStatus(String groupNo){
+        request(apiService.selectActivityStatus(groupNo)).setData(activityStatusLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 }
