@@ -1,5 +1,7 @@
 package com.queerlab.chat.http.api;
 
+import com.queerlab.chat.bean.ActivityBannerBean;
+import com.queerlab.chat.bean.ActivityDetailBean;
 import com.queerlab.chat.bean.ActivityListBean;
 import com.queerlab.chat.bean.ActivityStatusBean;
 import com.queerlab.chat.bean.GroupEmoBean;
@@ -9,6 +11,7 @@ import com.queerlab.chat.bean.HeatMapListBean;
 import com.queerlab.chat.bean.LocationUserBean;
 import com.queerlab.chat.bean.LoginBean;
 import com.queerlab.chat.bean.GroupListBean;
+import com.queerlab.chat.bean.MarkerActivityBean;
 import com.queerlab.chat.bean.NoticeBean;
 import com.queerlab.chat.bean.UploadFileBean;
 import com.queerlab.chat.bean.UserInfoBean;
@@ -293,12 +296,21 @@ public interface ApiService {
             @Field("rows") int rows
     );
 
+    //获取马克点活动列表
+    @FormUrlEncoded
+    @POST("/activity/app/selectActivityNoPage")
+    Flowable<BaseListResponse<MarkerActivityBean>> markerActivity(
+            @Field("lng") String lng,
+            @Field("lat") String lat
+    );
+
     //根据经纬度活动列表
     @FormUrlEncoded
     @POST("/activity/app/selectActivity")
     Flowable<BaseResponse<ActivityListBean>> locationActivity(
             @Field("lng") String lng,
             @Field("lat") String lat,
+            @Field("title") String title,
             @Field("page") int page,
             @Field("rows") int rows
     );
@@ -317,6 +329,7 @@ public interface ApiService {
     @POST("/activity/app/selectActivity")
     Flowable<BaseResponse<ActivityListBean>> userJoinActivity(
             @Field("userId") String userId,
+            @Field("title") String title,
             @Field("page") int page,
             @Field("rows") int rows
     );
@@ -326,9 +339,21 @@ public interface ApiService {
     @POST("/activity/app/selectActivity")
     Flowable<BaseResponse<ActivityListBean>> activityList(
             @Field("classId") String classId,
+            @Field("title") String title,
             @Field("page") int page,
             @Field("rows") int rows
     );
+
+    //活动详情
+    @FormUrlEncoded
+    @POST("/activity/app/selectActivityById")
+    Flowable<BaseResponse<ActivityDetailBean>> activityDetail(
+            @Field("id") String id
+    );
+
+    //活动轮播列表
+    @POST("/activity/app/selectActivityRotation")
+    Flowable<BaseListResponse<ActivityBannerBean>> activityBanner();
 
     //系统通知
     @POST("/notice/queryNotice")

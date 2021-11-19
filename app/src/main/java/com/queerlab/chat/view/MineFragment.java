@@ -27,6 +27,7 @@ import com.queerlab.chat.tencent.TUIKitUtil;
 import com.queerlab.chat.utils.PictureUtils;
 import com.queerlab.chat.utils.RefreshUtils;
 import com.queerlab.chat.view.group.user.UserSettingActivity;
+import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.viewmodel.GroupViewModel;
 import com.queerlab.chat.viewmodel.UserViewModel;
 import com.queerlab.chat.widget.CircleImageView;
@@ -77,6 +78,7 @@ public class MineFragment extends BaseFragment {
     RecyclerView recyclerViewActivity;
     private UserViewModel userViewModel;
     private GroupViewModel groupViewModel;
+    private ActivityViewModel activityViewModel;
     private UserInfoBean userInfoBean;
 
     @Override
@@ -96,7 +98,7 @@ public class MineFragment extends BaseFragment {
         recyclerViewGroup.setAdapter(groupListAdapter);
 
         recyclerViewActivity.setLayoutManager(new LinearLayoutManager(mActivity));
-        ActivityAdapter activityAdapter = new ActivityAdapter(R.layout.adapter_activity, RefreshUtils.getGroupListType());
+        ActivityAdapter activityAdapter = new ActivityAdapter(R.layout.adapter_activity, null);
         recyclerViewActivity.setAdapter(activityAdapter);
 
         recyclerViewInterest.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL,false));
@@ -121,6 +123,7 @@ public class MineFragment extends BaseFragment {
 
         userViewModel = mActivity.getViewModel(UserViewModel.class);
         groupViewModel = mActivity.getViewModel(GroupViewModel.class);
+        activityViewModel = mActivity.getViewModel(ActivityViewModel.class);
 
         //获取用户详情成功返回结果
         userViewModel.userInfoLiveData.observe(mActivity, userInfoBean -> {
@@ -166,10 +169,21 @@ public class MineFragment extends BaseFragment {
             }
         });
 
+        //用户参加过的活动数据成功返回
+        activityViewModel.userJoinActivityLiveData.observe(mActivity, activityListBean -> {
+            if (activityListBean.getPageNum() == 1) {
+                activityAdapter.setNewData(activityListBean.getList());
+                activityAdapter.setEmptyView(EmptyViewFactory.createEmptyView(mActivity, getString(R.string.not_empty_activity)));
+            } else {
+                activityAdapter.addData(activityAdapter.getData().size(), activityListBean.getList());
+            }
+        });
+
         smartRefreshLayout.setEnableLoadMore(false);
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
             userViewModel.userInfo(SPUtils.getInstance().getString(SpConfig.USER_ID));
             groupViewModel.userLatelyGroupList(SPUtils.getInstance().getString(SpConfig.USER_ID));
+            activityViewModel.userJoinActivity(SPUtils.getInstance().getString(SpConfig.USER_ID));
             refreshLayout.finishRefresh(1000);
         });
     }
@@ -178,6 +192,7 @@ public class MineFragment extends BaseFragment {
     protected void initDataFromService() {
         userViewModel.userInfo(SPUtils.getInstance().getString(SpConfig.USER_ID));
         groupViewModel.userLatelyGroupList(SPUtils.getInstance().getString(SpConfig.USER_ID));
+        activityViewModel.userJoinActivity(SPUtils.getInstance().getString(SpConfig.USER_ID));
     }
 
     @OnClick({R.id.iv_more, R.id.tv_user, R.id.tv_activity})

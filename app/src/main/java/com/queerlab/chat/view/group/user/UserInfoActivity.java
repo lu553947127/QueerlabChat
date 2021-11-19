@@ -31,6 +31,7 @@ import com.queerlab.chat.utils.PictureUtils;
 import com.queerlab.chat.utils.RefreshUtils;
 import com.queerlab.chat.utils.UserUtils;
 import com.queerlab.chat.tencent.TUIKitUtil;
+import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.viewmodel.GroupViewModel;
 import com.queerlab.chat.viewmodel.UserViewModel;
 import com.queerlab.chat.widget.CircleImageView;
@@ -84,6 +85,7 @@ public class UserInfoActivity extends BaseActivity {
     RecyclerView recyclerViewActivity;
     private UserViewModel userViewModel;
     private GroupViewModel groupViewModel;
+    private ActivityViewModel activityViewModel;
     private UserInfoBean userInfoBean;
 
     @Override
@@ -104,7 +106,7 @@ public class UserInfoActivity extends BaseActivity {
         recyclerViewGroup.setAdapter(groupListAdapter);
 
         recyclerViewActivity.setLayoutManager(new LinearLayoutManager(activity));
-        ActivityAdapter activityAdapter = new ActivityAdapter(R.layout.adapter_activity, RefreshUtils.getGroupListType());
+        ActivityAdapter activityAdapter = new ActivityAdapter(R.layout.adapter_activity, null);
         recyclerViewActivity.setAdapter(activityAdapter);
 
         groupListAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -126,6 +128,7 @@ public class UserInfoActivity extends BaseActivity {
 
         userViewModel = getViewModel(UserViewModel.class);
         groupViewModel = getViewModel(GroupViewModel.class);
+        activityViewModel = getViewModel(ActivityViewModel.class);
 
         //获取用户详情成功返回结果
         userViewModel.userInfoLiveData.observe(activity, userInfoBean -> {
@@ -181,9 +184,20 @@ public class UserInfoActivity extends BaseActivity {
             RefreshUtils.setNoMore(smartRefreshLayout,groupListBean.getPageNum(), groupListBean.getTotal());
         });
 
+        //用户参加过的活动数据成功返回
+        activityViewModel.userJoinActivityLiveData.observe(activity, activityListBean -> {
+            if (activityListBean.getPageNum() == 1) {
+                activityAdapter.setNewData(activityListBean.getList());
+                activityAdapter.setEmptyView(EmptyViewFactory.createEmptyView(activity, getString(R.string.not_empty_activity)));
+            } else {
+                activityAdapter.addData(activityAdapter.getData().size(), activityListBean.getList());
+            }
+        });
+
         if (TextUtils.isEmpty(getIntent().getStringExtra("userId"))){
             userViewModel.userInfo(SPUtils.getInstance().getString(SpConfig.USER_ID));
             groupViewModel.userLatelyGroupList(SPUtils.getInstance().getString(SpConfig.USER_ID));
+            activityViewModel.userJoinActivity(SPUtils.getInstance().getString(SpConfig.USER_ID));
         }else {
             userViewModel.userInfo(getIntent().getStringExtra("userId"));
             groupViewModel.userLatelyGroupList(getIntent().getStringExtra("userId"));
@@ -191,6 +205,7 @@ public class UserInfoActivity extends BaseActivity {
             if (!SPUtils.getInstance().getString(SpConfig.USER_ID).equals(getIntent().getStringExtra("userId"))){
                 UserUtils.setUserClap(ivAvatar, getIntent().getStringExtra("userId"), "user");
             }
+            activityViewModel.userJoinActivity(getIntent().getStringExtra("userId"));
         }
 
         //用户最近浏览的小组上拉加载数据

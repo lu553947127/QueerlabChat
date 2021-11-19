@@ -16,8 +16,7 @@
         android:layout_marginLeft="17dp"
         android:layout_gravity="center_vertical"
         android:scaleType="centerCrop"
-        roundiv:radius="15dp"
-        android:src="@drawable/app_icon"/>
+        roundiv:radius="15dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -28,14 +27,13 @@
         android:layout_marginRight="10dp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:text="周日畅饮"/>
+            android:textSize="18sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_address"
@@ -46,8 +44,7 @@
             android:drawablePadding="5dp"
             android:singleLine="true"
             android:textColor="@color/black"
-            android:textSize="15sp"
-            android:text="上海因西南麓26号"/>
+            android:textSize="15sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_initiator"
@@ -58,8 +55,7 @@
             android:drawablePadding="5dp"
             android:singleLine="true"
             android:textColor="@color/black"
-            android:textSize="15sp"
-            android:text="ABC老年迪斯科舞厅" />
+            android:textSize="15sp" />
 
     </LinearLayout>
 

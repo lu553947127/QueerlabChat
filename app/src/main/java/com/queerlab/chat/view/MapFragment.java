@@ -20,9 +20,10 @@ import com.queerlab.chat.adapter.MapNearbyAdapter;
 import com.queerlab.chat.app.MyApplication;
 import com.queerlab.chat.base.BaseFragment;
 import com.queerlab.chat.base.EmptyViewFactory;
+import com.queerlab.chat.bean.ActivityDetailBean;
 import com.queerlab.chat.bean.ActivityListBean;
-import com.queerlab.chat.bean.BaseBean;
 import com.queerlab.chat.bean.LocationUserBean;
+import com.queerlab.chat.bean.MarkerActivityBean;
 import com.queerlab.chat.dialog.AnimationDialog;
 import com.queerlab.chat.dialog.PublicTextDialog;
 import com.queerlab.chat.event.ClapEvent;
@@ -31,6 +32,7 @@ import com.queerlab.chat.listener.OnCustomClickListener;
 import com.queerlab.chat.tencent.TUIKitUtil;
 import com.queerlab.chat.utils.LocationUtils;
 import com.queerlab.chat.utils.PermissionUtils;
+import com.queerlab.chat.utils.PictureUtils;
 import com.queerlab.chat.utils.RefreshUtils;
 import com.queerlab.chat.view.activity.ActivityDetailActivity;
 import com.queerlab.chat.view.group.user.UserInfoActivity;
@@ -38,6 +40,7 @@ import com.queerlab.chat.view.map.MapNearbyActivity;
 import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.viewmodel.MapViewModel;
 import com.queerlab.chat.viewmodel.UserViewModel;
+import com.queerlab.chat.widget.CornerImageView;
 import com.queerlab.chat.widget.popup.CommonPopupWindow;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -99,6 +102,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
     private UserViewModel userViewModel;
     private ActivityViewModel activityViewModel;
     private MapNearbyAdapter mapNearbyAdapter;
+    private ActivityAdapter activityAdapter;
     private LocationEvent locationEvent;
     private CommonPopupWindow commonPopupWindow;
 
@@ -126,11 +130,14 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         recyclerView.setAdapter(mapNearbyAdapter);
 
         recyclerViewActivity.setLayoutManager(new LinearLayoutManager(mActivity));
-        ActivityAdapter activityAdapter = new ActivityAdapter(R.layout.adapter_activity, RefreshUtils.getGroupListType());
+        activityAdapter = new ActivityAdapter(R.layout.adapter_activity, null);
         recyclerViewActivity.setAdapter(activityAdapter);
 
         activityAdapter.setOnItemClickListener((adapter, view, position) -> {
-            ActivityUtils.startActivity(ActivityDetailActivity.class);
+            ActivityListBean.ListBean listBean = activityAdapter.getData().get(position);
+            Bundle bundle = new Bundle();
+            bundle.putString("activityId", String.valueOf(listBean.getId()));
+            ActivityUtils.startActivity(bundle, ActivityDetailActivity.class);
         });
 
         mapNearbyAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -174,9 +181,25 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
             animationDialog.showDialog();
         });
 
-        //获取经纬度马克点
+        //根据定位获取活动列表成功返回结构
         activityViewModel.locationActivityLiveData.observe(mActivity, activityListBean -> {
-            setMarker(activityListBean.getList());
+            if (activityListBean.getPageNum() == 1) {
+                activityAdapter.setNewData(activityListBean.getList());
+                activityAdapter.setEmptyView(EmptyViewFactory.createEmptyView(mActivity, "这里荒无人烟"));
+            } else {
+                activityAdapter.addData(activityAdapter.getData().size(), activityListBean.getList());
+            }
+            RefreshUtils.setNoMore(smartRefreshLayoutActivity, activityListBean.getPageNum(), activityListBean.getTotal());
+        });
+
+        //获取经纬度马克点
+        activityViewModel.markerActivityLiveData.observe(mActivity, activityListBean -> {
+            setMarker(activityListBean);
+        });
+
+        //获取活动详情
+        activityViewModel.activityDetailLiveData.observe(mActivity, activityDetailBean -> {
+            showPopWindow(activityDetailBean);
         });
 
         //刷新和加载
@@ -200,8 +223,26 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
             }
         });
 
-        smartRefreshLayoutActivity.setEnableRefresh(false);
-        smartRefreshLayoutActivity.setEnableLoadMore(false);
+        //刷新和加载
+        smartRefreshLayoutActivity.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                if (locationEvent.getLongitude() == 0){
+                    refreshLayout.finishRefresh();
+                    return;
+                }
+                activityViewModel.locationActivity(String.valueOf(locationEvent.getLongitude()), String.valueOf(locationEvent.getLatitude()));
+            }
+
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                if (locationEvent.getLongitude() == 0){
+                    refreshLayout.finishLoadMore();
+                    return;
+                }
+                activityViewModel.locationActivityMore(String.valueOf(locationEvent.getLongitude()), String.valueOf(locationEvent.getLatitude()));
+            }
+        });
     }
 
     @Override
@@ -243,15 +284,13 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
             @Override
             public void onCameraChangeFinished(CameraPosition cameraPosition) {
                 clearPopupWindow();
-                activityViewModel.locationActivity(String.valueOf(cameraPosition.target.longitude),
-                        String.valueOf(cameraPosition.target.latitude), 100);
+                activityViewModel.markerActivity(String.valueOf(cameraPosition.target.longitude), String.valueOf(cameraPosition.target.latitude));
             }
         });
 
         ///马克点点击监听
         tencentMap.setOnMarkerClickListener(marker -> {
-//            ToastUtils.showShort("马克被电击" + marker.getId() + marker.getTitle() + marker.getTag());
-            showPopWindow();
+            activityViewModel.activityDetail(String.valueOf(marker.getTag()));
             return false;
         });
     }
@@ -270,6 +309,13 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
                     isLocationPermission();
                 }
             }));
+            activityAdapter.setEmptyView(EmptyViewFactory.createEmptyCallView(mActivity,
+                    "您未开启定位权限，", "点击开启", new EmptyViewFactory.EmptyViewCallBack() {
+                        @Override
+                        public void onEmptyClick() {
+                            isLocationPermission();
+                        }
+                    }));
             PublicTextDialog publicTextDialog = new PublicTextDialog(mActivity, "同意获取地理位置");
             publicTextDialog.showDialog();
             publicTextDialog.setOnCustomClickListener(new OnCustomClickListener() {
@@ -289,14 +335,19 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
 
     ///设置马克点
     public Marker mCustomMarker;
-    private void setMarker(List<ActivityListBean.ListBean> activityList) {
+    private void setMarker(List<MarkerActivityBean> activityList) {
         ArrayList<MarkerOptions> markers = new ArrayList<>();
-        for (ActivityListBean.ListBean activityListBean : activityList) {
-            BitmapDescriptor custom = BitmapDescriptorFactory.fromResource(RefreshUtils.getMarkerDrawable(activityListBean.getIconName()));
-            MarkerOptions markerOptions = new MarkerOptions(new LatLng(activityListBean.getLat(), activityListBean.getLng()))
+        markers.clear();
+
+        if (mCustomMarker != null){
+            mCustomMarker.remove();
+        }
+        for (MarkerActivityBean markerActivityBean : activityList) {
+            BitmapDescriptor custom = BitmapDescriptorFactory.fromResource(RefreshUtils.getMarkerDrawable(markerActivityBean.getIconName()));
+            MarkerOptions markerOptions = new MarkerOptions(new LatLng(markerActivityBean.getLat(), markerActivityBean.getLng()))
                     .icon(custom)//添加马克点自定义icon
-                    .title(activityListBean.getTitle())//马克点点击显示title
-                    .tag(activityListBean.getId())//马克点主键
+                    .title(markerActivityBean.getTitle())//马克点点击显示title
+                    .tag(markerActivityBean.getId())//马克点主键
                     .flat(true);//马克点是否支持3d
             markers.add(markerOptions);
             mCustomMarker = tencentMap.addMarker(markerOptions);
@@ -308,7 +359,11 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
     /**
      * 弹出活动弹窗
      */
-    private void showPopWindow() {
+    CornerImageView cornerImageView;
+    AppCompatTextView tvTitle;
+    AppCompatTextView tv_address;
+    AppCompatTextView tv_initiator;
+    private void showPopWindow(ActivityDetailBean activityDetailBean) {
         if (commonPopupWindow == null) {
             commonPopupWindow = new CommonPopupWindow.Builder(mActivity)
                     .setView(R.layout.dialog_custom_marker)
@@ -317,15 +372,22 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
                     .setWidthAndHeight(ConvertUtils.dp2px(320), ViewGroup.LayoutParams.WRAP_CONTENT)
                     .setAnimationStyle(R.style.DialogAnimBottom)
                     .setViewOnclickListener((view, layoutResId) -> {
-//                        tvTitle = view.findViewById(R.id.tv_title);
-
+                        cornerImageView = view.findViewById(R.id.iv_avatar);
+                        tvTitle = view.findViewById(R.id.tv_title);
+                        tv_address = view.findViewById(R.id.tv_address);
+                        tv_initiator = view.findViewById(R.id.tv_initiator);
                         view.setOnClickListener(v -> {
-                            ActivityUtils.startActivity(ActivityDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("activityId", activityDetailBean.getId());
+                            ActivityUtils.startActivity(bundle, ActivityDetailActivity.class);
                         });
                     })
                     .create();
         }
-//        tvTitle.setText(title);
+        PictureUtils.setImage(mActivity, activityDetailBean.getImage(), cornerImageView);
+        tvTitle.setText(activityDetailBean.getTitle());
+        tv_address.setText(activityDetailBean.getPlace());
+        tv_initiator.setText(activityDetailBean.getPromoter());
         if (!commonPopupWindow.isShowing()) {
             commonPopupWindow.showAtLocation(mActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, ConvertUtils.dp2px(65));
         }
@@ -416,8 +478,8 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
                 mapViewModel.updateLocation(String.valueOf(locationEvent.getLongitude()), String.valueOf(locationEvent.getLatitude()));
                 MyApplication.getMainThreadHandler().postDelayed(() -> {
                     mapViewModel.locationUser(String.valueOf(locationEvent.getLongitude()), String.valueOf(locationEvent.getLatitude()));
-                    activityViewModel.locationActivity(String.valueOf(locationEvent.getLongitude()),
-                            String.valueOf(locationEvent.getLatitude()), 100);
+                    activityViewModel.markerActivity(String.valueOf(locationEvent.getLongitude()), String.valueOf(locationEvent.getLatitude()));
+                    activityViewModel.locationActivity(String.valueOf(locationEvent.getLongitude()), String.valueOf(locationEvent.getLatitude()));
                 }, 1000);
                 break;
             case "refuse":

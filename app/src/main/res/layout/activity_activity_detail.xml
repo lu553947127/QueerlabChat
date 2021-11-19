@@ -28,12 +28,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_image"
                 android:layout_width="match_parent"
                 android:layout_height="211dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"/>
+                android:layout_marginBottom="15dp"
+                android:scaleType="centerCrop"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,8 +47,7 @@
                     android:layout_height="50dp"
                     android:layout_marginLeft="17dp"
                     android:scaleType="centerCrop"
-                    roundiv:radius="15dp"
-                    android:src="@drawable/app_icon"/>
+                    roundiv:radius="15dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -57,52 +57,58 @@
                     android:layout_marginRight="10dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_name"
+                        android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:text="周日畅饮"/>
+                        android:textSize="18sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/tv_promoter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:text="发起人：ABC老年迪斯科舞台"/>
+                        android:textSize="15sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_initiator"
+                        android:id="@+id/tv_start_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:text="时间：2021年10月20日 周六 20:00-2:00" />
+                        android:textSize="15sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_end_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:text="地点：上海陕西南路26号" />
+                        android:textSize="15sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_place"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:text="点数：free" />
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -156,16 +162,12 @@
                     android:text="活动详情" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:text="2018年将迎来改革开放四十周年，也是实现“两个一百年”目标的关键时间节点，综合国力显著提高，国际地位持续上升。
-
-当今中国经济社会的表现不仅限于经济总量、人均收入等方面，更表现在对精神、文化、生态等多维度文明结合的消费升级上。中国酒店业近年来蓬勃向上、多元化发展，酒店业作为服务落地的终端，向世界展示着中国文化及中国人民的热情好客，同时让消费者在中国酒店享受到优质而精致的消费体验及服务。
-
-中国日报是国家英文日报，长期以来与海外媒体建立了密切的合作关系，在借船出海，利用海外媒体讲好中国故事方面积累了一定经验。借改革开放四十周年契机，我报拟举办“China Daily 2018我心之选”年度酒店大赏系列活动。通过国内外中高端读者视角、生活方式和入住体验等全方位、多维度评选出他们心目中的年度酒店大赏，在全球范围内提升酒店影响力，并为酒店品牌建设、旅游群体出行、旅游业提供权威有力的参考。" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 

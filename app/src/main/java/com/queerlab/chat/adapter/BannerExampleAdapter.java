@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.queerlab.chat.R;
+import com.queerlab.chat.bean.ActivityBannerBean;
 import com.queerlab.chat.widget.image.ImageConfig;
 import com.queerlab.chat.widget.image.ImageLoader;
 import com.youth.banner.adapter.BannerAdapter;
@@ -26,9 +27,9 @@ import java.util.List;
  * @UpdateRemark: 更新说明
  * @Version: 1.0
  */
-public class BannerExampleAdapter extends BannerAdapter<String, BannerExampleAdapter.BannerViewHolder> {
+public class BannerExampleAdapter extends BannerAdapter<ActivityBannerBean, BannerExampleAdapter.BannerViewHolder> {
     public Context context;
-    public BannerExampleAdapter(Context context, List<String> beanList) {
+    public BannerExampleAdapter(Context context, List<ActivityBannerBean> beanList) {
         //设置数据，也可以调用banner提供的方法,或者自己在adapter中实现
         super(beanList);
         this.context = context;
@@ -47,9 +48,9 @@ public class BannerExampleAdapter extends BannerAdapter<String, BannerExampleAda
     }
 
     @Override
-    public void onBindView(BannerViewHolder holder, String item, int position, int size) {
+    public void onBindView(BannerViewHolder holder, ActivityBannerBean item, int position, int size) {
         ImageLoader.load(context, new ImageConfig.Builder()
-                .url(item)
+                .url(item.getImage())
                 .imageView(holder.imageView)
                 .placeholder(R.drawable.icon_images_empty)
                 .errorPic(R.drawable.icon_images_empty)
