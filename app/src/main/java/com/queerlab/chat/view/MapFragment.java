@@ -37,6 +37,7 @@ import com.queerlab.chat.utils.RefreshUtils;
 import com.queerlab.chat.view.activity.ActivityDetailActivity;
 import com.queerlab.chat.view.group.user.UserInfoActivity;
 import com.queerlab.chat.view.map.MapNearbyActivity;
+import com.queerlab.chat.view.search.SearchActivity;
 import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.viewmodel.MapViewModel;
 import com.queerlab.chat.viewmodel.UserViewModel;
@@ -409,9 +410,12 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         }
     }
 
-    @OnClick({R.id.tv_screen, R.id.tv_map, R.id.tv_user, R.id.tv_activity})
+    @OnClick({R.id.tv_search, R.id.tv_screen, R.id.tv_map, R.id.tv_user, R.id.tv_activity})
     void onClick(View view) {
         switch (view.getId()){
+            case R.id.tv_search://搜索
+                ActivityUtils.startActivity(SearchActivity.class);
+                break;
             case R.id.tv_screen://列表模式
                 llList.setVisibility(View.VISIBLE);
                 llMap.setVisibility(View.GONE);
