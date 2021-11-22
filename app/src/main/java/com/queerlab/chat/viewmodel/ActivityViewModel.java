@@ -2,12 +2,15 @@ package com.queerlab.chat.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.queerlab.chat.base.PageState;
 import com.queerlab.chat.base.SpConfig;
 import com.queerlab.chat.bean.ActivityBannerBean;
 import com.queerlab.chat.bean.ActivityDetailBean;
+import com.queerlab.chat.bean.ActivityJoinStatusBean;
 import com.queerlab.chat.bean.ActivityListBean;
+import com.queerlab.chat.bean.GroupDetailBean;
 import com.queerlab.chat.bean.GroupTypeBean;
 import com.queerlab.chat.bean.MarkerActivityBean;
 import com.queerlab.chat.http.retrofit.BaseRepository;
@@ -38,6 +41,9 @@ public class ActivityViewModel extends BaseRepository {
     public MutableLiveData<List<MarkerActivityBean>> markerActivityLiveData;
     public MutableLiveData<ActivityDetailBean> activityDetailLiveData;
     public MutableLiveData<List<ActivityBannerBean>> activityBannerLiveData;
+    public MutableLiveData activityJoinLiveData;
+    public MutableLiveData<ActivityJoinStatusBean> activityJoinStatusLiveData;
+    public MutableLiveData<GroupDetailBean> groupDetailLiveData;
     private final String userId;
     private int page = 1;
 
@@ -53,6 +59,9 @@ public class ActivityViewModel extends BaseRepository {
         markerActivityLiveData = new MutableLiveData<>();
         activityDetailLiveData = new MutableLiveData<>();
         activityBannerLiveData = new MutableLiveData<>();
+        activityJoinLiveData = new MutableLiveData();
+        activityJoinStatusLiveData = new MutableLiveData<>();
+        groupDetailLiveData = new MutableLiveData<>();
     }
 
     /**
@@ -120,6 +129,7 @@ public class ActivityViewModel extends BaseRepository {
      * @param title
      */
     public void searchActivity(String title){
+        LogUtils.e("title: " + title);
         page = 1;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
         request(apiService.SearchActivity(title, page, 10)).setData(searchActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
@@ -143,7 +153,7 @@ public class ActivityViewModel extends BaseRepository {
     public void userJoinActivity(String userId){
         page = 1;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.userJoinActivity(userId, "", page, 10)).setData(userJoinActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.userJoinActivity(userId, "\''\\", page, 10)).setData(userJoinActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 
     /**
@@ -176,5 +186,33 @@ public class ActivityViewModel extends BaseRepository {
         page ++;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
         request(apiService.activityList(classId,"", page, 10)).setData(activityListLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 加入活动
+     *
+     * @param activityId
+     */
+    public void activityJoin(String activityId){
+        request(apiService.activityJoin(userId, activityId)).setData(activityJoinLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 查询用户参加活动状态
+     *
+     * @param activityId
+     * @param groupNo
+     */
+    public void activityJoinStatus(String activityId, String groupNo){
+        request(apiService.activityJoinStatus(userId, activityId, groupNo)).setData(activityJoinStatusLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+    }
+
+    /**
+     * 根据活动查询小组详情
+     *
+     * @param groupNo
+     */
+    public void groupDetail(String groupNo){
+        request(apiService.groupDetail(userId, groupNo)).setData(groupDetailLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 }

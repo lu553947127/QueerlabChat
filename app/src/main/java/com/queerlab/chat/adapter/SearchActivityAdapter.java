@@ -44,6 +44,6 @@ public class SearchActivityAdapter extends BaseQuickAdapter<ActivityListBean.Lis
         helper.setText(R.id.tv_title, HtmlUtils.setSpan(mContext, item.getTitle(), keyword));
 
         CornerImageView cornerImageView = helper.getView(R.id.iv_images);
-        PictureUtils.setImage(mContext, item.getImage(), cornerImageView);
+        PictureUtils.setImage(mContext, item.getLogo(), cornerImageView);
     }
 }

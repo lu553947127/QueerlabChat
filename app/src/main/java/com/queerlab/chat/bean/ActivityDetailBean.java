@@ -46,6 +46,7 @@ public class ActivityDetailBean {
     private Object oldTitle;
     private Object imageFile;
     private String image;
+    private String logo;
     private String imageKey;
     private String promoter;
     private String startTime;
@@ -55,7 +56,7 @@ public class ActivityDetailBean {
     private String position;
     private String place;
     private String details;
-    private Object cost;
+    private String cost;
     private String groupNo;
     private double lng;
     private double lat;
@@ -105,6 +106,14 @@ public class ActivityDetailBean {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public String getImageKey() {
@@ -179,11 +188,11 @@ public class ActivityDetailBean {
         this.details = details;
     }
 
-    public Object getCost() {
+    public String getCost() {
         return cost;
     }
 
-    public void setCost(Object cost) {
+    public void setCost(String cost) {
         this.cost = cost;
     }
 

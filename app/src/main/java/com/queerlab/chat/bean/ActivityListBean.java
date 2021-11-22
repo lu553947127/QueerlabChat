@@ -89,8 +89,9 @@ public class ActivityListBean {
         private String title;
         private String group_no;
         private String image;
+        private String logo;
         private String place;
-        private Object cost;
+        private String cost;
         private double lng;
         private double lat;
         private int num;
@@ -139,6 +140,14 @@ public class ActivityListBean {
             this.image = image;
         }
 
+        public String getLogo() {
+            return logo;
+        }
+
+        public void setLogo(String logo) {
+            this.logo = logo;
+        }
+
         public String getPlace() {
             return place;
         }
@@ -147,11 +156,11 @@ public class ActivityListBean {
             this.place = place;
         }
 
-        public Object getCost() {
+        public String getCost() {
             return cost;
         }
 
-        public void setCost(Object cost) {
+        public void setCost(String cost) {
             this.cost = cost;
         }
 

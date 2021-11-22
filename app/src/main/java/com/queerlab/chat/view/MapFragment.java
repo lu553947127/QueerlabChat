@@ -40,6 +40,7 @@ import com.queerlab.chat.view.map.MapNearbyActivity;
 import com.queerlab.chat.view.search.SearchActivity;
 import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.viewmodel.MapViewModel;
+import com.queerlab.chat.viewmodel.NewGroupViewModel;
 import com.queerlab.chat.viewmodel.UserViewModel;
 import com.queerlab.chat.widget.CornerImageView;
 import com.queerlab.chat.widget.popup.CommonPopupWindow;
@@ -102,6 +103,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
     private MapViewModel mapViewModel;
     private UserViewModel userViewModel;
     private ActivityViewModel activityViewModel;
+    private NewGroupViewModel newGroupViewModel;
     private MapNearbyAdapter mapNearbyAdapter;
     private ActivityAdapter activityAdapter;
     private LocationEvent locationEvent;
@@ -123,6 +125,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         mapViewModel = mActivity.getViewModel(MapViewModel.class);
         userViewModel = mActivity.getViewModel(UserViewModel.class);
         activityViewModel = mActivity.getViewModel(ActivityViewModel.class);
+        newGroupViewModel = mActivity.getViewModel(NewGroupViewModel.class);
 
         locationEvent = new LocationEvent(0, 0);
 
@@ -199,7 +202,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         });
 
         //获取活动详情
-        activityViewModel.activityDetailLiveData.observe(mActivity, activityDetailBean -> {
+        newGroupViewModel.activityDetailLiveData.observe(mActivity, activityDetailBean -> {
             showPopWindow(activityDetailBean);
         });
 
@@ -291,7 +294,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
 
         ///马克点点击监听
         tencentMap.setOnMarkerClickListener(marker -> {
-            activityViewModel.activityDetail(String.valueOf(marker.getTag()));
+            newGroupViewModel.activityDetail(String.valueOf(marker.getTag()));
             return false;
         });
     }

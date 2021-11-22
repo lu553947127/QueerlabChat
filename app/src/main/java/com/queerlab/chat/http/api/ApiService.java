@@ -2,8 +2,10 @@ package com.queerlab.chat.http.api;
 
 import com.queerlab.chat.bean.ActivityBannerBean;
 import com.queerlab.chat.bean.ActivityDetailBean;
+import com.queerlab.chat.bean.ActivityJoinStatusBean;
 import com.queerlab.chat.bean.ActivityListBean;
 import com.queerlab.chat.bean.ActivityStatusBean;
+import com.queerlab.chat.bean.GroupDetailBean;
 import com.queerlab.chat.bean.GroupEmoBean;
 import com.queerlab.chat.bean.GroupRoomIdBean;
 import com.queerlab.chat.bean.GroupTypeBean;
@@ -349,6 +351,32 @@ public interface ApiService {
     @POST("/activity/app/selectActivityById")
     Flowable<BaseResponse<ActivityDetailBean>> activityDetail(
             @Field("id") String id
+    );
+
+    //加入活动
+    @FormUrlEncoded
+    @POST("/activity/app/insertActivityUserRelation")
+    Flowable<BaseResponse> activityJoin(
+            @Field("activityId") String activityId,
+            @Field("userId") String userId
+    );
+
+    //查询用户参加活动状态
+    @FormUrlEncoded
+    @POST("/activity/app/checkUser")
+    Flowable<BaseResponse<ActivityJoinStatusBean>> activityJoinStatus(
+            @Field("userId") String userId,
+            @Field("activityId") String activityId,
+            @Field("groupNo") String groupNo
+
+    );
+
+    //根据活动查询小组详情
+    @FormUrlEncoded
+    @POST("/group/app/selectGroupByGroupNo")
+    Flowable<BaseResponse<GroupDetailBean>> groupDetail(
+            @Field("userId") String userId,
+            @Field("groupNo") String groupNo
     );
 
     //活动轮播列表

@@ -35,6 +35,6 @@ public class ActivityAdapter extends BaseQuickAdapter<ActivityListBean.ListBean,
                 .setText(R.id.tv_initiator, item.getPromoter());
 
         CornerImageView cornerImageView = helper.getView(R.id.iv_avatar);
-        PictureUtils.setImage(mContext, item.getImage(), cornerImageView);
+        PictureUtils.setImage(mContext, item.getLogo(), cornerImageView);
     }
 }

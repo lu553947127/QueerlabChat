@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/drawable/selector_menu_message.xml" value="0.2759259259259259" />
         <entry key="app/src/main/res/drawable/selector_menu_mine.xml" value="0.23703703703703705" />
         <entry key="app/src/main/res/drawable/shape_gray2_10.xml" value="0.23703703703703705" />
+        <entry key="app/src/main/res/drawable/shape_gray2_25.xml" value="0.2898148148148148" />
         <entry key="app/src/main/res/drawable/shape_gray_10.xml" value="0.23703703703703705" />
         <entry key="app/src/main/res/drawable/shape_gray_15.xml" value="0.2601851851851852" />
         <entry key="app/src/main/res/drawable/shape_gray_25.xml" value="0.2657407407407407" />
@@ -44,6 +45,8 @@
         <entry key="app/src/main/res/layout/adapter_search_user.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/chat_input_layout.xml" value="0.2259963768115942" />
         <entry key="app/src/main/res/layout/dialog_custom_marker.xml" value="0.1831306990881459" />
+        <entry key="app/src/main/res/layout/dialog_public_confirm.xml" value="0.1831306990881459" />
+        <entry key="app/src/main/res/layout/dialog_public_text.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/fragment_active.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/fragment_index.xml" value="0.175" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.1" />

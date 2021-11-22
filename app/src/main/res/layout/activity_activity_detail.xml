@@ -17,6 +17,7 @@
         android:layout_height="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/icon_back"/>
 
     <androidx.core.widget.NestedScrollView
