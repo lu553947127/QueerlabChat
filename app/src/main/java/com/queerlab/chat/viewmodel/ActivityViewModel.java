@@ -2,7 +2,6 @@ package com.queerlab.chat.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.queerlab.chat.base.PageState;
 import com.queerlab.chat.base.SpConfig;
@@ -108,7 +107,7 @@ public class ActivityViewModel extends BaseRepository {
     public void locationActivity(String longitude, String latitude){
         page = 1;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.locationActivity(longitude, latitude, "", page, 10)).setData(locationActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.locationActivity(longitude, latitude, page, 10)).setData(locationActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 
     /**
@@ -120,7 +119,7 @@ public class ActivityViewModel extends BaseRepository {
     public void locationActivityMore(String longitude, String latitude){
         page ++;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.locationActivity(longitude, latitude,"", page, 10)).setData(locationActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.locationActivity(longitude, latitude, page, 10)).setData(locationActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 
     /**
@@ -129,10 +128,9 @@ public class ActivityViewModel extends BaseRepository {
      * @param title
      */
     public void searchActivity(String title){
-        LogUtils.e("title: " + title);
         page = 1;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.SearchActivity(title, page, 10)).setData(searchActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.searchActivity(title, page, 10)).setData(searchActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 
     /**
@@ -143,7 +141,7 @@ public class ActivityViewModel extends BaseRepository {
     public void searchActivityMore(String title){
         page ++;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.SearchActivity(title, page, 10)).setData(searchActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.searchActivity(title, page, 10)).setData(searchActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 
     /**
@@ -153,7 +151,7 @@ public class ActivityViewModel extends BaseRepository {
     public void userJoinActivity(String userId){
         page = 1;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.userJoinActivity(userId, "\''\\", page, 10)).setData(userJoinActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.userJoinActivity(userId, page, 10)).setData(userJoinActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 
     /**
@@ -163,7 +161,7 @@ public class ActivityViewModel extends BaseRepository {
     public void userJoinActivityMore(String userId){
         page ++;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.userJoinActivity(userId, "", page, 10)).setData(userJoinActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.userJoinActivity(userId, page, 10)).setData(userJoinActivityLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 
     /**
@@ -174,7 +172,7 @@ public class ActivityViewModel extends BaseRepository {
     public void activityList(String classId){
         page = 1;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.activityList(classId,"", page, 10)).setData(activityListLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.activityList(classId, page, 10)).setData(activityListLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 
     /**
@@ -185,7 +183,7 @@ public class ActivityViewModel extends BaseRepository {
     public void activityListMore(String classId){
         page ++;
         pageStateLiveData.postValue(PageState.PAGE_REFRESH);
-        request(apiService.activityList(classId,"", page, 10)).setData(activityListLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
+        request(apiService.activityList(classId, page, 10)).setData(activityListLiveData).setPageState(pageStateLiveData).setFailStatue(failStateLiveData).send();
     }
 
     /**

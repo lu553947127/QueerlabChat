@@ -18,6 +18,7 @@ import com.queerlab.chat.adapter.InterestAdapter;
 import com.queerlab.chat.base.BaseFragment;
 import com.queerlab.chat.base.EmptyViewFactory;
 import com.queerlab.chat.base.SpConfig;
+import com.queerlab.chat.bean.ActivityListBean;
 import com.queerlab.chat.bean.GroupListBean;
 import com.queerlab.chat.bean.UserInfoBean;
 import com.queerlab.chat.event.GroupEvent;
@@ -26,6 +27,7 @@ import com.queerlab.chat.listener.OnCustomCallBack;
 import com.queerlab.chat.tencent.TUIKitUtil;
 import com.queerlab.chat.utils.PictureUtils;
 import com.queerlab.chat.utils.RefreshUtils;
+import com.queerlab.chat.view.activity.ActivityDetailActivity;
 import com.queerlab.chat.view.group.user.UserSettingActivity;
 import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.viewmodel.GroupViewModel;
@@ -119,6 +121,13 @@ public class MineFragment extends BaseFragment {
 
                 }
             });
+        });
+
+        activityAdapter.setOnItemClickListener((adapter, view1, position) -> {
+            ActivityListBean.ListBean listBean = activityAdapter.getData().get(position);
+            Bundle bundle = new Bundle();
+            bundle.putString("activityId", String.valueOf(listBean.getId()));
+            ActivityUtils.startActivity(bundle, ActivityDetailActivity.class);
         });
 
         userViewModel = mActivity.getViewModel(UserViewModel.class);

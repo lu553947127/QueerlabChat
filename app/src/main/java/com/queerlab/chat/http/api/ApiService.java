@@ -312,15 +312,14 @@ public interface ApiService {
     Flowable<BaseResponse<ActivityListBean>> locationActivity(
             @Field("lng") String lng,
             @Field("lat") String lat,
-            @Field("title") String title,
             @Field("page") int page,
             @Field("rows") int rows
     );
 
     //活动列表根据关键字搜索
     @FormUrlEncoded
-    @POST("/activity/app/selectActivity")
-    Flowable<BaseResponse<ActivityListBean>> SearchActivity(
+    @POST("/activity/app/selectActivityLike")
+    Flowable<BaseResponse<ActivityListBean>> searchActivity(
             @Field("title") String title,
             @Field("page") int page,
             @Field("rows") int rows
@@ -331,7 +330,6 @@ public interface ApiService {
     @POST("/activity/app/selectActivity")
     Flowable<BaseResponse<ActivityListBean>> userJoinActivity(
             @Field("userId") String userId,
-            @Field("title") String title,
             @Field("page") int page,
             @Field("rows") int rows
     );
@@ -341,7 +339,6 @@ public interface ApiService {
     @POST("/activity/app/selectActivity")
     Flowable<BaseResponse<ActivityListBean>> activityList(
             @Field("classId") String classId,
-            @Field("title") String title,
             @Field("page") int page,
             @Field("rows") int rows
     );
@@ -357,8 +354,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/activity/app/insertActivityUserRelation")
     Flowable<BaseResponse> activityJoin(
-            @Field("activityId") String activityId,
-            @Field("userId") String userId
+            @Field("userId") String userId,
+            @Field("activityId") String activityId
     );
 
     //查询用户参加活动状态

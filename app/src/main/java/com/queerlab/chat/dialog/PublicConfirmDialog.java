@@ -48,7 +48,7 @@ public class PublicConfirmDialog {
     public void showDialog() {
         if (dialog.isShowing()) return;
         dialog.setCancelable(false);
-        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_public_text, null);
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_public_confirm, null);
         TextView tv_title = view.findViewById(R.id.tv_title);
         TextView tv_agree = view.findViewById(R.id.tv_agree);
 
