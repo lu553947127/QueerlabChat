@@ -350,13 +350,12 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
             BitmapDescriptor custom = BitmapDescriptorFactory.fromResource(RefreshUtils.getMarkerDrawable(markerActivityBean.getIconName()));
             MarkerOptions markerOptions = new MarkerOptions(new LatLng(markerActivityBean.getLat(), markerActivityBean.getLng()))
                     .icon(custom)//添加马克点自定义icon
-                    .title(markerActivityBean.getTitle())//马克点点击显示title
+//                    .title(markerActivityBean.getTitle())//马克点点击显示title
                     .tag(markerActivityBean.getId())//马克点主键
                     .flat(true);//马克点是否支持3d
             markers.add(markerOptions);
             mCustomMarker = tencentMap.addMarker(markerOptions);
             mCustomMarker.setClickable(true);
-            mCustomMarker.hideInfoWindow();
         }
     }
 

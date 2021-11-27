@@ -142,8 +142,8 @@
                             android:padding="10dp"
                             android:layout_marginRight="15dp"
                             android:textColor="@color/white"
-                            android:textSize="17sp"
-                            android:text="😊 用户"/>
+                            android:textSize="14sp"
+                            android:text="💬 小组"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_activity"
@@ -152,7 +152,7 @@
                             android:background="@drawable/shape_gray_25"
                             android:padding="10dp"
                             android:textColor="@color/color_D2D2D2"
-                            android:textSize="17sp"
+                            android:textSize="14sp"
                             android:text="🎉 活动"/>
 
                     </LinearLayout>
