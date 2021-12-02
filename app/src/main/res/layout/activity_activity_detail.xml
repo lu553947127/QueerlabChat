@@ -162,13 +162,11 @@
                     android:textSize="18sp"
                     android:text="活动详情" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_detail"
-                    android:layout_width="wrap_content"
+                <WebView
+                    android:id="@+id/webview_detail"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:layout_margin="20dp" />
 
             </LinearLayout>
 

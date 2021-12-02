@@ -1,8 +1,8 @@
 package com.queerlab.chat.view.activity;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
+import android.webkit.WebView;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -17,6 +17,7 @@ import com.queerlab.chat.listener.OnCustomCallBack;
 import com.queerlab.chat.listener.OnCustomClickListener;
 import com.queerlab.chat.tencent.TUIKitUtil;
 import com.queerlab.chat.utils.PictureUtils;
+import com.queerlab.chat.utils.WebUtils;
 import com.queerlab.chat.viewmodel.ActivityViewModel;
 import com.queerlab.chat.viewmodel.GroupViewModel;
 import com.queerlab.chat.widget.CornerImageView;
@@ -59,8 +60,8 @@ public class ActivityDetailActivity extends BaseActivity {
     AppCompatTextView tvJoinGroup;
     @BindView(R.id.tv_attend_activity)
     AppCompatTextView tvAttendActivity;
-    @BindView(R.id.tv_detail)
-    AppCompatTextView tvDetail;
+    @BindView(R.id.webview_detail)
+    WebView webView;
     private ActivityViewModel activityViewModel;
     private GroupViewModel groupViewModel;
     private ActivityDetailBean activityDetailBean;
@@ -78,6 +79,7 @@ public class ActivityDetailActivity extends BaseActivity {
     @Override
     protected void initDataAndEvent(Bundle savedInstanceState) {
         BarUtils.setStatusBarColor(fakeStatusBar, getResources().getColor(R.color.white));
+        WebUtils.getShowTextLabel(webView);
 
         activityViewModel = getViewModel(ActivityViewModel.class);
         groupViewModel = getViewModel(GroupViewModel.class);
@@ -93,7 +95,8 @@ public class ActivityDetailActivity extends BaseActivity {
             tvEndTime.setText("结束时间：" + activityDetailBean.getEndTime());
             tvPlace.setText("地点：" + activityDetailBean.getPlace());
             tvPoint.setText("点数：" + activityDetailBean.getCost());
-            tvDetail.setText(Html.fromHtml(activityDetailBean.getDetails()));
+            webView.loadDataWithBaseURL(null, activityDetailBean.getDetails(),
+                    "text/html",  "utf-8", null);
             activityViewModel.activityJoinStatus(activityDetailBean.getId(), activityDetailBean.getGroupNo());
         });
 
