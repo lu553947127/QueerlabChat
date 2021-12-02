@@ -3,6 +3,7 @@ package com.queerlab.chat.adapter;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -51,7 +52,9 @@ public class MapNearbyAdapter extends BaseQuickAdapter<LocationUserBean.ListBean
             UserUtils.setUserClap(circleImageView, String.valueOf(item.getUser_id()), "map");
         }
 
-        DrawableUtils.setDrawableLeft(mContext, helper, R.drawable.icon_type, 35, 35, R.id.tv_user_type);
-        DrawableUtils.setDrawableLeft(mContext, helper, R.drawable.icon_activity, 35, 35, R.id.tv_activity);
+        AppCompatTextView tv_user_type = helper.getView(R.id.tv_user_type);
+        AppCompatTextView tv_activity = helper.getView(R.id.tv_activity);
+        DrawableUtils.setDrawableLeft(mContext, tv_user_type, R.drawable.icon_type, 35, 35);
+        DrawableUtils.setDrawableLeft(mContext, tv_activity, R.drawable.icon_activity, 35, 35);
     }
 }

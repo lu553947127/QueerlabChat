@@ -1,6 +1,7 @@
 package com.queerlab.chat.adapter;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -38,7 +39,9 @@ public class ActivityAdapter extends BaseQuickAdapter<ActivityListBean.ListBean,
         CornerImageView cornerImageView = helper.getView(R.id.iv_avatar);
         PictureUtils.setImage(mContext, item.getLogo(), cornerImageView);
 
-        DrawableUtils.setDrawableLeft(mContext, helper, R.drawable.icon_address, 35, 35, R.id.tv_address);
-        DrawableUtils.setDrawableLeft(mContext, helper, R.drawable.icon_initiator, 35, 35, R.id.tv_initiator);
+        AppCompatTextView tv_address = helper.getView(R.id.tv_address);
+        AppCompatTextView tv_initiator = helper.getView(R.id.tv_initiator);
+        DrawableUtils.setDrawableLeft(mContext, tv_address, R.drawable.icon_address, 35, 35);
+        DrawableUtils.setDrawableLeft(mContext, tv_initiator, R.drawable.icon_initiator, 35, 35);
     }
 }

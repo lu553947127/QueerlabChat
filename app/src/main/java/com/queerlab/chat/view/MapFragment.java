@@ -30,6 +30,7 @@ import com.queerlab.chat.event.ClapEvent;
 import com.queerlab.chat.event.LocationEvent;
 import com.queerlab.chat.listener.OnCustomClickListener;
 import com.queerlab.chat.tencent.TUIKitUtil;
+import com.queerlab.chat.utils.DrawableUtils;
 import com.queerlab.chat.utils.LocationUtils;
 import com.queerlab.chat.utils.PermissionUtils;
 import com.queerlab.chat.utils.PictureUtils;
@@ -388,6 +389,8 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
                     })
                     .create();
         }
+        DrawableUtils.setDrawableLeft(mContext, tv_address, R.drawable.icon_address, 35, 35);
+        DrawableUtils.setDrawableLeft(mContext, tv_initiator, R.drawable.icon_initiator, 35, 35);
         PictureUtils.setImage(mActivity, activityDetailBean.getImage(), cornerImageView);
         tvTitle.setText(activityDetailBean.getTitle());
         tv_address.setText(activityDetailBean.getPlace());
