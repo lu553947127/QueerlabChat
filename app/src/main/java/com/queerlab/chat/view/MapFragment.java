@@ -347,7 +347,8 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
             mCustomMarker.remove();
         }
         for (MarkerActivityBean markerActivityBean : activityList) {
-            BitmapDescriptor custom = BitmapDescriptorFactory.fromResource(RefreshUtils.getMarkerDrawable(markerActivityBean.getIconName()));
+            BitmapDescriptor custom = BitmapDescriptorFactory.fromResource(
+                    RefreshUtils.getMarkerDrawable(markerActivityBean.getIconName()));
             MarkerOptions markerOptions = new MarkerOptions(new LatLng(markerActivityBean.getLat(), markerActivityBean.getLng()))
                     .icon(custom)//添加马克点自定义icon
 //                    .title(markerActivityBean.getTitle())//马克点点击显示title

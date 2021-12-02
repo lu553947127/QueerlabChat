@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.queerlab.chat.R;
 import com.queerlab.chat.bean.ActivityListBean;
+import com.queerlab.chat.utils.DrawableUtils;
 import com.queerlab.chat.utils.PictureUtils;
 import com.queerlab.chat.widget.CornerImageView;
 
@@ -36,5 +37,8 @@ public class ActivityAdapter extends BaseQuickAdapter<ActivityListBean.ListBean,
 
         CornerImageView cornerImageView = helper.getView(R.id.iv_avatar);
         PictureUtils.setImage(mContext, item.getLogo(), cornerImageView);
+
+        DrawableUtils.setDrawableLeft(mContext, helper, R.drawable.icon_address, 35, 35, R.id.tv_address);
+        DrawableUtils.setDrawableLeft(mContext, helper, R.drawable.icon_initiator, 35, 35, R.id.tv_initiator);
     }
 }

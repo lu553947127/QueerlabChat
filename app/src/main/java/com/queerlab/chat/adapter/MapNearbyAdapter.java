@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.queerlab.chat.R;
 import com.queerlab.chat.base.SpConfig;
 import com.queerlab.chat.bean.LocationUserBean;
+import com.queerlab.chat.utils.DrawableUtils;
 import com.queerlab.chat.utils.PictureUtils;
 import com.queerlab.chat.utils.UserUtils;
 import com.queerlab.chat.widget.CircleImageView;
@@ -34,6 +35,7 @@ public class MapNearbyAdapter extends BaseQuickAdapter<LocationUserBean.ListBean
         super(layoutResId, data);
     }
 
+
     @Override
     protected void convert(BaseViewHolder helper, LocationUserBean.ListBean item) {
         helper.setText(R.id.tv_name, TextUtils.isEmpty(item.getUser_name()) ? "未知" : item.getUser_name())
@@ -48,5 +50,8 @@ public class MapNearbyAdapter extends BaseQuickAdapter<LocationUserBean.ListBean
         if (!SPUtils.getInstance().getString(SpConfig.USER_ID).equals(String.valueOf(item.getUser_id()))){
             UserUtils.setUserClap(circleImageView, String.valueOf(item.getUser_id()), "map");
         }
+
+        DrawableUtils.setDrawableLeft(mContext, helper, R.drawable.icon_type, 35, 35, R.id.tv_user_type);
+        DrawableUtils.setDrawableLeft(mContext, helper, R.drawable.icon_activity, 35, 35, R.id.tv_activity);
     }
 }
