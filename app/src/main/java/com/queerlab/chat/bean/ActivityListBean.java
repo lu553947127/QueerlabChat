@@ -107,6 +107,7 @@ public class ActivityListBean {
         private String create_time;
         private String update_time;
         private String image_key;
+        private String position;
 
         public int getId() {
             return id;
@@ -282,6 +283,14 @@ public class ActivityListBean {
 
         public void setImage_key(String image_key) {
             this.image_key = image_key;
+        }
+
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
         }
     }
 }

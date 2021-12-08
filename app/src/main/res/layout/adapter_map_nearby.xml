@@ -31,9 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_status"
@@ -42,7 +41,7 @@
             android:layout_marginTop="5dp"
             android:singleLine="true"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_user_type"
@@ -51,8 +50,8 @@
             android:layout_marginTop="5dp"
             android:drawablePadding="5dp"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textColor="@color/color_8E8E93"
+            android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_activity"
@@ -61,8 +60,8 @@
             android:layout_marginTop="5dp"
             android:drawablePadding="5dp"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textColor="@color/color_8E8E93"
+            android:textSize="14sp"
             android:text="参加过的活动"/>
 
     </LinearLayout>

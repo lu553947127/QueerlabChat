@@ -34,7 +34,7 @@ public class ActivityAdapter extends BaseQuickAdapter<ActivityListBean.ListBean,
     protected void convert(BaseViewHolder helper, ActivityListBean.ListBean item) {
         helper.setText(R.id.tv_title, item.getTitle())
                 .setText(R.id.tv_address, item.getPlace())
-                .setText(R.id.tv_initiator, item.getPromoter());
+                .setText(R.id.tv_initiator, item.getPosition());
 
         CornerImageView cornerImageView = helper.getView(R.id.iv_avatar);
         PictureUtils.setImage(mContext, item.getLogo(), cornerImageView);

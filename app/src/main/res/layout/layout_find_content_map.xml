@@ -1,46 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.tencent.tencentmap.mapsdk.maps.MapView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/ll_map">
+    android:id="@+id/map_view">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:text="发现身边的🌈"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_screen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:drawablePadding="3dp"
-            android:drawableLeft="@drawable/icon_screen"
-            android:textColor="@color/color_8E8E93"
-            android:text="列表模式"
-            android:textSize="16sp"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"/>
-
-    </RelativeLayout>
-
-    <com.tencent.tencentmap.mapsdk.maps.MapView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="15dp"/>
-
-</LinearLayout>
+</com.tencent.tencentmap.mapsdk.maps.MapView>

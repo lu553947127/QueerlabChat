@@ -81,16 +81,20 @@ import butterknife.OnClick;
  * @Version: 1.0
  */
 public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnHeatMapReadyListener {
+    @BindView(R.id.tv_switch)
+    AppCompatTextView tvSwitch;
     @BindView(R.id.ll_list)
     LinearLayout llList;
-    @BindView(R.id.ll_map)
-    LinearLayout llMap;
+    @BindView(R.id.map_view)
+    MapView mapView;
+    @BindView(R.id.ll_activity)
+    LinearLayout llActivity;
+    @BindView(R.id.tv_map)
+    AppCompatTextView tvMap;
     @BindView(R.id.tv_user)
     AppCompatTextView tvUser;
     @BindView(R.id.tv_activity)
     AppCompatTextView tvActivity;
-    @BindView(R.id.map_view)
-    MapView mapView;
     @BindView(R.id.refresh)
     SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.rv)
@@ -416,20 +420,29 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         }
     }
 
-    @OnClick({R.id.tv_search, R.id.tv_screen, R.id.tv_map, R.id.tv_user, R.id.tv_activity})
+    @OnClick({R.id.tv_search, R.id.tv_switch, R.id.tv_user, R.id.tv_activity})
     void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_search://搜索
                 ActivityUtils.startActivity(SearchActivity.class);
                 break;
-            case R.id.tv_screen://列表模式
-                llList.setVisibility(View.VISIBLE);
-                llMap.setVisibility(View.GONE);
-                clearPopupWindow();
-                break;
-            case R.id.tv_map://探索模式
-                llList.setVisibility(View.GONE);
-                llMap.setVisibility(View.VISIBLE);
+            case R.id.tv_switch://列表/探索模式切换
+                if (tvSwitch.getText().toString().equals("列表模式")){
+                    llActivity.setVisibility(View.VISIBLE);
+                    llList.setVisibility(View.VISIBLE);
+                    tvMap.setVisibility(View.INVISIBLE);
+                    mapView.setVisibility(View.GONE);
+                    tvSwitch.setText("探索模式");
+                    DrawableUtils.setDrawableLeft(mContext, tvSwitch, R.drawable.icon_find_map, 55, 55);
+                }else {
+                    llActivity.setVisibility(View.INVISIBLE);
+                    llList.setVisibility(View.GONE);
+                    tvMap.setVisibility(View.VISIBLE);
+                    mapView.setVisibility(View.VISIBLE);
+                    clearPopupWindow();
+                    tvSwitch.setText("列表模式");
+                    DrawableUtils.setDrawableLeft(mContext, tvSwitch, R.drawable.icon_screen, 55, 55);
+                }
                 break;
             case R.id.tv_user://用户
                 tvUser.setBackgroundResource(R.drawable.shape_yellow_25);

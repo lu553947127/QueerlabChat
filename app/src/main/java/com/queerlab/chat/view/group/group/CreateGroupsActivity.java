@@ -124,14 +124,14 @@ public class CreateGroupsActivity extends BaseActivity {
             }
         });
 
-        //滑动监听
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                AnimatorUtils.listScrollAnimation(tvNext, dy);
-            }
-        });
+//        //滑动监听
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                AnimatorUtils.listScrollAnimation(tvNext, dy);
+//            }
+//        });
 
         //加载动画返回结果
         groupViewModel.pageStateLiveData.observe(activity, s -> {

@@ -1,12 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:layout_below="@+id/rl_toolbar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+
+        <LinearLayout
+            android:id="@+id/ll_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="invisible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_yellow_25"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:text="😊 用户"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/shape_gray_25"
+                android:padding="10dp"
+                android:textColor="@color/color_D2D2D2"
+                android:textSize="14sp"
+                android:text="🎉 活动"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:text="发现身边的🌈"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="3dp"
+            android:drawableLeft="@drawable/icon_screen"
+            android:textColor="@color/color_8E8E93"
+            android:text="列表模式"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"/>
+
+    </RelativeLayout>
 
     <include layout="@layout/layout_find_content_list"/>
 
     <include layout="@layout/layout_find_content_map"/>
 
-</RelativeLayout>
+</LinearLayout>

@@ -77,6 +77,8 @@ public class UserInfoActivity extends BaseActivity {
     LinearLayout llInterest;
     @BindView(R.id.rv_interest)
     RecyclerView recyclerViewInterest;
+    @BindView(R.id.tv_mine)
+    AppCompatTextView tvMine;
     @BindView(R.id.tv_user)
     AppCompatTextView tvUser;
     @BindView(R.id.tv_activity)
@@ -89,6 +91,7 @@ public class UserInfoActivity extends BaseActivity {
     private GroupViewModel groupViewModel;
     private ActivityViewModel activityViewModel;
     private UserInfoBean userInfoBean;
+    private String isSelect = "用户";
 
     @Override
     protected int initLayoutRes() {
@@ -158,20 +161,50 @@ public class UserInfoActivity extends BaseActivity {
                 llInterest.setVisibility(View.GONE);
             }
 
-            if (userInfoBean.getIs_hide_group() == 2){
+            if (userInfoBean.getIs_hide_group() == 2 && userInfoBean.getIs_hide_activity() != 2){
+                isSelect = "用户";
+                tvUser.setBackgroundResource(R.drawable.shape_yellow_25);
+                tvUser.setTextColor(getResources().getColor(R.color.white));
+                tvActivity.setBackgroundResource(R.drawable.shape_gray_25);
+                tvActivity.setTextColor(getResources().getColor(R.color.color_D2D2D2));
+                tvMine.setVisibility(View.VISIBLE);
                 tvUser.setVisibility(View.VISIBLE);
                 recyclerViewGroup.setVisibility(View.VISIBLE);
+                tvActivity.setVisibility(View.GONE);
+                recyclerViewActivity.setVisibility(View.GONE);
+            }else if (userInfoBean.getIs_hide_activity() == 2 && userInfoBean.getIs_hide_group() != 2){
+                isSelect = "活动";
+                tvUser.setBackgroundResource(R.drawable.shape_gray_25);
+                tvUser.setTextColor(getResources().getColor(R.color.color_D2D2D2));
+                tvActivity.setBackgroundResource(R.drawable.shape_yellow_25);
+                tvActivity.setTextColor(getResources().getColor(R.color.white));
+                tvMine.setVisibility(View.VISIBLE);
+                recyclerViewGroup.setVisibility(View.GONE);
+                tvUser.setVisibility(View.GONE);
+                tvActivity.setVisibility(View.VISIBLE);
+                recyclerViewActivity.setVisibility(View.VISIBLE);
+            }else if (userInfoBean.getIs_hide_activity() == 2 && userInfoBean.getIs_hide_group() == 2){
+                isSelect = "用户";
+                tvUser.setBackgroundResource(R.drawable.shape_yellow_25);
+                tvUser.setTextColor(getResources().getColor(R.color.white));
+                tvActivity.setBackgroundResource(R.drawable.shape_gray_25);
+                tvActivity.setTextColor(getResources().getColor(R.color.color_D2D2D2));
+                tvMine.setVisibility(View.VISIBLE);
+                tvUser.setVisibility(View.VISIBLE);
+                tvActivity.setVisibility(View.VISIBLE);
+                if (isSelect.equals("用户")){
+                    recyclerViewGroup.setVisibility(View.VISIBLE);
+                    recyclerViewActivity.setVisibility(View.GONE);
+                }else {
+                    recyclerViewActivity.setVisibility(View.VISIBLE);
+                    recyclerViewGroup.setVisibility(View.GONE);
+                }
             }else {
                 tvUser.setVisibility(View.GONE);
                 recyclerViewGroup.setVisibility(View.GONE);
-            }
-
-            if (userInfoBean.getIs_hide_activity() == 2){
-                tvActivity.setVisibility(View.VISIBLE);
-                recyclerViewActivity.setVisibility(View.VISIBLE);
-            }else {
                 tvActivity.setVisibility(View.GONE);
                 recyclerViewActivity.setVisibility(View.GONE);
+                tvMine.setVisibility(View.GONE);
             }
         });
 
@@ -243,6 +276,7 @@ public class UserInfoActivity extends BaseActivity {
                 ActivityUtils.startActivity(bundle, UserSettingActivity.class);
                 break;
             case R.id.tv_user://用户
+                isSelect = "用户";
                 tvUser.setBackgroundResource(R.drawable.shape_yellow_25);
                 tvUser.setTextColor(getResources().getColor(R.color.white));
                 tvActivity.setBackgroundResource(R.drawable.shape_gray_25);
@@ -251,6 +285,7 @@ public class UserInfoActivity extends BaseActivity {
                 recyclerViewActivity.setVisibility(View.GONE);
                 break;
             case R.id.tv_activity://活动
+                isSelect = "活动";
                 tvUser.setBackgroundResource(R.drawable.shape_gray_25);
                 tvUser.setTextColor(getResources().getColor(R.color.color_D2D2D2));
                 tvActivity.setBackgroundResource(R.drawable.shape_yellow_25);

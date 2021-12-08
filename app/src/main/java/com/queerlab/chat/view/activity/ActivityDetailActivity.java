@@ -90,7 +90,7 @@ public class ActivityDetailActivity extends BaseActivity {
             PictureUtils.setImage(activity, activityDetailBean.getImage(), ivImage);
             PictureUtils.setImage(activity, activityDetailBean.getLogo(), cornerImageView);
             tvTitle.setText(activityDetailBean.getTitle());
-            tvPromoter.setText("发起人：" + activityDetailBean.getPromoter());
+            tvPromoter.setText("发起人：" + activityDetailBean.getPosition());
             tvStartTime.setText("开始时间：" + activityDetailBean.getStartTime());
             tvEndTime.setText("结束时间：" + activityDetailBean.getEndTime());
             tvPlace.setText("地点：" + activityDetailBean.getPlace());
