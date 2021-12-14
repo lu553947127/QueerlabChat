@@ -61,8 +61,7 @@
             android:drawablePadding="5dp"
             android:singleLine="true"
             android:textColor="@color/color_8E8E93"
-            android:textSize="14sp"
-            android:text="参加过的活动"/>
+            android:textSize="14sp" />
 
     </LinearLayout>
 

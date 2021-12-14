@@ -42,8 +42,10 @@ public class MapNearbyAdapter extends BaseQuickAdapter<LocationUserBean.ListBean
         helper.setText(R.id.tv_name, TextUtils.isEmpty(item.getUser_name()) ? "未知" : item.getUser_name())
                 .setText(R.id.tv_status, item.getUser_status())
                 .setText(R.id.tv_user_type, item.getUser_type())
+                .setText(R.id.tv_activity, item.getTitle())
                 .setGone(R.id.tv_status, !TextUtils.isEmpty(item.getUser_status()))
-                .setGone(R.id.tv_user_type, !TextUtils.isEmpty(item.getUser_type()));
+                .setGone(R.id.tv_user_type, !TextUtils.isEmpty(item.getUser_type()))
+                .setGone(R.id.tv_activity, !TextUtils.isEmpty(item.getTitle()));
 
         CircleImageView circleImageView = helper.getView(R.id.iv_avatar);
         PictureUtils.setImage(mContext, item.getUser_portrait(), circleImageView);

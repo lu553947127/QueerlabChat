@@ -51,7 +51,7 @@
             android:text="发现身边的🌈"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_switch"
+            android:id="@+id/tv_switch_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -63,6 +63,21 @@
             android:textSize="16sp"
             android:gravity="center_vertical"
             android:layout_gravity="center_vertical"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_switch_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="3dp"
+            android:drawableLeft="@drawable/icon_find_map"
+            android:textColor="@color/color_8E8E93"
+            android:text="探索模式"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

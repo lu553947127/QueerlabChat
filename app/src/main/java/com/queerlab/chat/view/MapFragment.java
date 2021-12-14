@@ -81,8 +81,10 @@ import butterknife.OnClick;
  * @Version: 1.0
  */
 public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnHeatMapReadyListener {
-    @BindView(R.id.tv_switch)
-    AppCompatTextView tvSwitch;
+    @BindView(R.id.tv_switch_user)
+    AppCompatTextView tvSwitchUser;
+    @BindView(R.id.tv_switch_activity)
+    AppCompatTextView tvSwitchActivity;
     @BindView(R.id.ll_list)
     LinearLayout llList;
     @BindView(R.id.map_view)
@@ -398,7 +400,7 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         PictureUtils.setImage(mActivity, activityDetailBean.getImage(), cornerImageView);
         tvTitle.setText(activityDetailBean.getTitle());
         tv_address.setText(activityDetailBean.getPlace());
-        tv_initiator.setText(activityDetailBean.getPromoter());
+        tv_initiator.setText(activityDetailBean.getPosition());
         if (!commonPopupWindow.isShowing()) {
             commonPopupWindow.showAtLocation(mActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, ConvertUtils.dp2px(65));
         }
@@ -420,29 +422,28 @@ public class MapFragment extends BaseFragment implements HeatMapTileProvider.OnH
         }
     }
 
-    @OnClick({R.id.tv_search, R.id.tv_switch, R.id.tv_user, R.id.tv_activity})
+    @OnClick({R.id.tv_search, R.id.tv_switch_user, R.id.tv_switch_activity,  R.id.tv_user, R.id.tv_activity})
     void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_search://搜索
                 ActivityUtils.startActivity(SearchActivity.class);
                 break;
-            case R.id.tv_switch://列表/探索模式切换
-                if (tvSwitch.getText().toString().equals("列表模式")){
-                    llActivity.setVisibility(View.VISIBLE);
-                    llList.setVisibility(View.VISIBLE);
-                    tvMap.setVisibility(View.INVISIBLE);
-                    mapView.setVisibility(View.GONE);
-                    tvSwitch.setText("探索模式");
-                    DrawableUtils.setDrawableLeft(mContext, tvSwitch, R.drawable.icon_find_map, 55, 55);
-                }else {
-                    llActivity.setVisibility(View.INVISIBLE);
-                    llList.setVisibility(View.GONE);
-                    tvMap.setVisibility(View.VISIBLE);
-                    mapView.setVisibility(View.VISIBLE);
-                    clearPopupWindow();
-                    tvSwitch.setText("列表模式");
-                    DrawableUtils.setDrawableLeft(mContext, tvSwitch, R.drawable.icon_screen, 55, 55);
-                }
+            case R.id.tv_switch_user://列表模式
+                llActivity.setVisibility(View.VISIBLE);
+                llList.setVisibility(View.VISIBLE);
+                tvMap.setVisibility(View.INVISIBLE);
+                mapView.setVisibility(View.GONE);
+                tvSwitchUser.setVisibility(View.GONE);
+                tvSwitchActivity.setVisibility(View.VISIBLE);
+                break;
+            case R.id.tv_switch_activity://探索模式
+                llActivity.setVisibility(View.INVISIBLE);
+                llList.setVisibility(View.GONE);
+                tvMap.setVisibility(View.VISIBLE);
+                mapView.setVisibility(View.VISIBLE);
+                clearPopupWindow();
+                tvSwitchUser.setVisibility(View.VISIBLE);
+                tvSwitchActivity.setVisibility(View.GONE);
                 break;
             case R.id.tv_user://用户
                 tvUser.setBackgroundResource(R.drawable.shape_yellow_25);

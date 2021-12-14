@@ -87,6 +87,7 @@ public class LocationUserBean {
         private String user_sign;
         private String lat;
         public boolean isSelect;
+        private String title;
 
         public String getUser_status() {
             return user_status;
@@ -182,6 +183,14 @@ public class LocationUserBean {
 
         public void setSelect(boolean select) {
             isSelect = select;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
         }
     }
 }
