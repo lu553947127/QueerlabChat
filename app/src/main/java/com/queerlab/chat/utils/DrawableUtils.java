@@ -32,9 +32,7 @@ public class DrawableUtils {
      */
     public static void setDrawableLeft(Context context, AppCompatTextView appCompatTextView, int leftIcon, int right, int bottom){
         Drawable drawable = context.getResources().getDrawable(leftIcon);
-        if (right != 0 && bottom != 0){
-            drawable.setBounds(0, 0, right, bottom);
-        }
+        drawable.setBounds(0, 0, right, bottom);
         appCompatTextView.setCompoundDrawables(drawable, null, null, null);
     }
 }
