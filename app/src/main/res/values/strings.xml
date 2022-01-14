@@ -30,7 +30,7 @@
     <string name="not_search">请输入关键词\n搜索小组、用户、活动</string>
 
     <string name="agreement_title">是否同意用户协议及隐私政策</string>
-    <string name="agreement_content">“Wonderland App”（本隐私协议中指北京原来可以科技有限公司）深知信息安全对您的重要性，且非常重视您的隐私保护和个人信息保护。我们将遵循相关法律法规，保护您的个人信息和隐私安全。请认真阅读《用户协议》和《隐私协议》中的相关内容。选择下方的“同意”按钮表示您已阅读并同意我们按照《隐私协议》中的内容收集、存储使用您的个人信息。若您点击“稍后”，则暂时无法使用本产品。</string>
+    <string name="agreement_content">“Wonderland App”（本隐私协议中指北京原来可以科技有限公司）深知信息安全对您的重要性，且非常重视您的隐私保护和个人信息保护。我们将遵循相关法律法规，保护您的个人信息和隐私安全。请认真阅读《用户协议》和《隐私协议》中的相关内容。选择下方的“同意”按钮表示您已阅读并同意我们按照《隐私协议》中的内容收集、存储使用您的个人信息。若您点击“不同意”，则暂时无法使用本产品。</string>
 
     <string name="guide_group_title">加入或创建小组\n发出自己的声音</string>
     <string name="guide_person_title">遇到感兴趣的人\n就拍拍她的头像</string>

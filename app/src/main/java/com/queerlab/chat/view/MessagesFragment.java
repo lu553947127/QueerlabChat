@@ -68,7 +68,12 @@ public class MessagesFragment extends BaseFragment {
 
         //获取系统通知数据成功返回
         noticeViewModel.noticeLiveData.observe(mActivity, noticeBean -> {
-            tvNotice.setText(noticeBean.getNotice_title());
+            if (noticeBean == null){
+                tvNotice.setVisibility(View.GONE);
+                return;
+            }
+            tvNotice.setVisibility(View.VISIBLE);
+            tvNotice.setText(TextUtils.isEmpty(noticeBean.getNotice_title()) ? "" : noticeBean.getNotice_title());
             url = noticeBean.getNotice_content();
         });
 

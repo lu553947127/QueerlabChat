@@ -46,6 +46,7 @@
         <entry key="app/src/main/res/layout/adapter_search_activity.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/adapter_search_user.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/chat_input_layout.xml" value="0.2259963768115942" />
+        <entry key="app/src/main/res/layout/dialog_agreement.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/dialog_custom_marker.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/dialog_public_confirm.xml" value="0.1831306990881459" />
         <entry key="app/src/main/res/layout/dialog_public_text.xml" value="0.1831306990881459" />
